@@ -56,7 +56,7 @@ to implement the `AddressParse.parse()` method. It should return two pieces of
 data:
 
 - `address_components`: The parsed address
-- `address_type`: The type of address proviced
+- `address_type`: The type of address provided
 
 ### Step 2: Complete the API endpoint
 
