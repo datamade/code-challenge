@@ -100,7 +100,7 @@ Not familiar with `pytest`? Consult [our testing guidelines](https://github.com/
 for quick start instructions, plus tips and tricks for testing Django
 applications.
 
-### Step 5: Submit your work
+### Step 6: Submit your work
 
 To submit your work, create a feature branch for your code, commit your changes,
 push your commits up to your fork, and open up a pull request against `master`.
