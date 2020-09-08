@@ -19,12 +19,6 @@ class AddressParse(APIView):
         return Response({})
 
     def parse(self, address):
-        """
-        Given an address string, return the parsed components of the address.
-        """
-        try:
-            address_components, address_type = usaddress.tag(address)
-        except usaddress.RepeatedLabelError:
-            raise ParseError(f'Failed to parse the string "{address}"')
-
+        # TODO: Implement this method to return the parsed components of a
+        # given address using usaddress: https://github.com/datamade/usaddress
         return address_components, address_type
