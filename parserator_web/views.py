@@ -8,17 +8,25 @@ from rest_framework.exceptions import ParseError
 
 class Home(TemplateView):
     template_name = 'parserator_web/index.html'
+    print("************************", flush=True)
+    print("Home")
+    print("************************")
 
 
 class AddressParse(APIView):
     renderer_classes = [JSONRenderer]
 
     def get(self, request):
+        print("get************************", flush=True)
+        # print(self)
+        # print(request)
+        # print("************************")
         # TODO: Flesh out this method to parse an address string using the
         # parse() method and return the parsed components to the frontend.
         return Response({})
 
     def parse(self, address):
+        print("parse************************", flush=True)
         # TODO: Implement this method to return the parsed components of a
         # given address using usaddress: https://github.com/datamade/usaddress
         return address_components, address_type
