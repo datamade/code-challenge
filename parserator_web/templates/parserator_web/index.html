@@ -41,5 +41,33 @@
   <script type="text/javascript">
     /* TODO: Flesh this out to connect the form to the API and render results
     in the #address-results div. */
+    console.log("In extra_js");
+    $('.form').submit(event => {
+      event.preventDefault();
+      let address = $('form').serializeArray()[1].value;
+
+      
+      
+$.ajax({
+        type: 'GET',
+        url: "{% url 'address-parse' %}",
+        data: {"address": address},
+        success: function (response) {
+          // if not valid
+          if(!response["valid"]){
+          
+          }
+          console.log("xxx", response)
+        },
+        error: function (response) {
+          console.log("error")
+        }
+      })
+
+
+
+
+      $('#address-results').css('display', '')
+    })
   </script>
 {% endblock %}
