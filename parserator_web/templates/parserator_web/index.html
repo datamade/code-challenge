@@ -55,9 +55,23 @@ $.ajax({
         success: function (response) {
           // if not valid
           if(!response["valid"]){
-          
+            console.log('Not Valid')
           }
-          console.log("xxx", response)
+          let address = response[1]
+
+          let table_str = '';
+
+          for (address_component in address) {
+            console.log(address[address_component])
+            table_str += `
+              <tr>
+                <td> ${address[address_component]} </td>
+                <td> ${address_component} </td>
+              </tr>`
+          }
+
+          let table_body = $('#address-results tbody');
+          table_body.html(table_str)
         },
         error: function (response) {
           console.log("error")
