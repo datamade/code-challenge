@@ -16,20 +16,21 @@ class AddressParse(APIView):
     def get(self, request):
         
         input_string = request.GET['address']
-        address = self.parse(input_string)
-        address_components = address[0]
-        address_type = address[1]
-
         address_components, address_type = self.parse(input_string)
 
         return Response([input_string, address_components, address_type])
 
     def parse(self, address):
 
-        address_to_parse = usaddress.tag(address)
-        print(address_to_parse)
-        address_components = dict(address_to_parse[0])
-        address_type = address_to_parse[1]
+        try:
+            parsed_address = usaddress.tag(address)
+            address_components = dict(parsed_address[0])
+            address_type = parsed_address[1]
+            
+        except Exception as e:
+            print(e.message, type(e))
+            return
 
         return address_components, address_type
+        
         
