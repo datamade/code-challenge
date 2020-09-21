@@ -39,7 +39,62 @@
 
 {% block extra_js %}
   <script type="text/javascript">
-    /* TODO: Flesh this out to connect the form to the API and render results
-    in the #address-results div. */
+
+    function createRow(arr) {
+      return `<tr><td>${arr[1]}</td><td>${arr[0]}</td></tr>`;
+    }
+
+    function renderAddress(data) {
+      const addressDiv = document.getElementById('address-results');
+      addressDiv.style.display = 'block';
+      const address_components = Object.entries(data.address_components);
+      addressDiv.innerHTML = '';
+      addressDiv.innerHTML = `
+      <h4>Parsing results</h4>
+        <p>Address type: ${data.address_type} <strong><span id="parse-type"></span></strong></p>
+        <table class="table table-bordered">
+          <thead>
+            <tr>
+            <th>Address part</th>
+            <th>Tag</th>
+          </tr>
+          </thead>
+          <tbody>
+            ${address_components.map(e => createRow(e)).join('')}
+          </tbody>
+        </table>`;
+    }
+
+    function renderNullError() {
+      const addressDiv = document.getElementById('address-results');
+      addressDiv.style.display = 'block';
+      addressDiv.innerHTML = '';
+      addressDiv.innerHTML = '<div class="alert alert-danger">Please provide a value to parse.</div>';
+    }
+
+    function renderError(error) {
+      const addressDiv = document.getElementById('address-results');
+      addressDiv.style.display = 'block';
+      addressDiv.innerHTML = '';
+      addressDiv.innerHTML = `<div class="alert alert-danger">${error}</div>`;
+    }
+
+    const searchForm = document.querySelector('.form')
+    searchForm.addEventListener('submit', e => {
+      e.preventDefault();
+      const addressForm = document.getElementById('address');
+      const inputString = addressForm.value;
+      addressForm.value = '';
+      const url = new URL('http://localhost:8000/api/parse/');
+      const params = {address: inputString};
+      url.search = new URLSearchParams(params).toString();
+      if (inputString) {
+        fetch(url)
+        .then(response => response.json())
+        .then(data => data.detail ? renderError(data.detail) : renderAddress(data))
+        .catch(error => renderError(error))
+      }
+      else {renderNullError();}
+    })
   </script>
 {% endblock %}
