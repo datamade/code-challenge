@@ -8,7 +8,6 @@ def test_api_parse_succeds(client):
     c = Client()
     response = c.get('/api/parse/', {'address': address_string})
     assert response.status_code == 200
-    # pytest.fail()
 
 
 def test_api_parse_raises_error(client):
@@ -18,4 +17,3 @@ def test_api_parse_raises_error(client):
     c = Client()
     response = c.get('/api/parse/', {'address': address_string})
     assert response.status_code == 400
-    # pytest.fail()
