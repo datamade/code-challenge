@@ -14,11 +14,28 @@ class AddressParse(APIView):
     renderer_classes = [JSONRenderer]
 
     def get(self, request):
-        # TODO: Flesh out this method to parse an address string using the
-        # parse() method and return the parsed components to the frontend.
-        return Response({})
+        # Given a GET argument named 'address' at
+        # /api/parse?address=[address goes here], uses usaddress 
+        # parse method to return three components; input_string,
+        # address_components, address_type
+
+        try:
+            input_string = request.query_params['address']
+            address_components, address_type = self.parse(input_string)
+            return Response({
+                'input_string': input_string,
+                'address_components': address_components,
+                'address_type': address_type,
+            })
+        except ParseError:
+            raise
 
     def parse(self, address):
         # TODO: Implement this method to return the parsed components of a
         # given address using usaddress: https://github.com/datamade/usaddress
-        return address_components, address_type
+
+        try:
+            address_components, address_type = usaddress.tag(address)
+            return address_components, address_type
+        except usaddress.RepeatedLabelError:
+            raise

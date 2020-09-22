@@ -3,6 +3,8 @@
 
 {% block title %}Home{% endblock %}
 
+{% block extra_meta %}<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>{% endblock %}
+
 {% block body %}
 <div class="container">
   <div class="row pt-5 pb-4">
@@ -41,5 +43,49 @@
   <script type="text/javascript">
     /* TODO: Flesh this out to connect the form to the API and render results
     in the #address-results div. */
+
+    $(document).ready(function(){
+      $('#submit').click(function(event){
+        console.log($('#address').val());
+        event.preventDefault();
+
+        $.ajax({
+          url: "/api/parse/",
+          type: "get",
+          data: {"address": $('#address').val()},
+          success: function(response) {
+
+            console.log(response);
+            console.log(response.address_components);
+
+            var rows = $.map(response.address_components, function(value, key) {
+              return '<tr><td>' + key + '</td><td>' + value + '</td></tr>'; 
+            });
+            $('.table tbody').html(rows.join(''));
+
+          },
+          error: function(xhr) {
+            alert('There was an error!');
+          }
+        });
+
+      });
+    });
+
+    // $.ajax({
+    //   url: "/api/parse/",
+    //   type: "get",
+    //   data: {
+    //     $('#address').val()
+    //   },
+    //   success: function(response) {
+    //     // do something
+    //     console.log(response);
+    //   },
+    //   error: function(xhr) {
+    //     // handle error
+    //   }
+    // });
+
   </script>
 {% endblock %}
