@@ -19,16 +19,20 @@ class AddressParse(APIView):
         # parse method to return three components; input_string,
         # address_components, address_type
 
-        try:
-            input_string = request.query_params['address']
+        input_string = request.query_params.get('address', None)
+        if input_string:
             address_components, address_type = self.parse(input_string)
+        else:
+            raise ParseError('No address= GET argument in URL.')
+
+        if address_components == {}:
+            raise ParseError('No address components returned from API.')
+        else:
             return Response({
                 'input_string': input_string,
                 'address_components': address_components,
                 'address_type': address_type,
             })
-        except ParseError:
-            raise
 
     def parse(self, address):
         # TODO: Implement this method to return the parsed components of a
@@ -38,4 +42,4 @@ class AddressParse(APIView):
             address_components, address_type = usaddress.tag(address)
             return address_components, address_type
         except usaddress.RepeatedLabelError:
-            raise
+            raise ParseError('Repeated Label Error')
