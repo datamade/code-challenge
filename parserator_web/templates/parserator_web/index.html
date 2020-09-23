@@ -41,5 +41,42 @@
   <script type="text/javascript">
     /* TODO: Flesh this out to connect the form to the API and render results
     in the #address-results div. */
+
+    // Note: I am still learning JavaScript and jQuery so my code does not work.
+    // I wrote out my general thought process and hope this helps clarify how I
+    // would try and set this up with greater familiarity with JavaScript
+
+    async function sendData() {
+        const xhr = new XMLHttpRequest();
+        const formData = new FormData(form);
+
+        xhr.addEventListener("load", function(event) {
+          alert(event.target.responseText);
+        } );
+
+        xhr.addEventListener("error", function(event) {
+          alert('Something went wrong.');
+        } );
+
+        xhr.open('POST', 'api/parse/');
+        xhr.send(formData);
+      }
+
+    const form = document.getElementById("address");
+    form.addEventListener("submit", function(event) {
+      event.preventDefault();
+      sendData();
+
+      } );
+    } );
+
+    // Get parsed data output ready for display
+    $(document).ready(function(){
+      $("button").click(function(){
+        $("#address-results").load(parsedData);
+      });
+    });
+    }
+
   </script>
 {% endblock %}
