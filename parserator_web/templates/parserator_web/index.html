@@ -32,6 +32,7 @@
           </tbody>
         </table>
       </div>
+      <div id="input-error" class="alert alert-danger" style="display:none;margin-top:20px">Hm that address isn't valid, please try again!</div>
     </div>
   </div>
 </div>
@@ -41,5 +42,26 @@
   <script type="text/javascript">
     /* TODO: Flesh this out to connect the form to the API and render results
     in the #address-results div. */
+    $("#submit").click(function(e) {
+      e.preventDefault()
+      $.ajax({
+        url: "api/parse",
+        data: {"address": $("#address").val()},
+        type:"get",
+        success: function(results) {
+          console.log(results)
+          $("#parse-type").text(results["address_type"])
+          $("#address-results").css("display", "inline-block")
+          $("#input-error").css("display", "none")
+          Object.keys(results["address_components"]).forEach( (key)=> {
+            $("#address-results table tbody").append(`<tr><td>${results["address_components"][key]}</td><td>${key}</td></tr>`)
+          })
+        },
+        error: function(e) {
+          $("#address-results").css("display", "none")
+          $("#input-error").css("display", "inline-block")
+        }
+      })
+    })
   </script>
 {% endblock %}
