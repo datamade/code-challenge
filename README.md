@@ -96,6 +96,10 @@ You can run the tests using Docker:
 docker-compose -f docker-compose.yml -f tests/docker-compose.yml run --rm app
 ```
 
+Note that, in addition to running the unit tests, the testing script will lint
+your JavaScript and Python code. Don't forget to fix any linting errors these
+commands surface!
+
 Not familiar with `pytest`? Consult [our testing guidelines](https://github.com/datamade/testing-guidelines)
 for quick start instructions, plus tips and tricks for testing Django
 applications.
