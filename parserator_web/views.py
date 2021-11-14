@@ -16,17 +16,18 @@ class AddressParse(APIView):
     def get(self, request):
         # TODO: Flesh out this method to parse an address string using the
         # parse() method and return the parsed components to the frontend.
-        address = self.parse(request.GET["address"])
-        if address != "Repeated Label Error":
+        address = request.GET["address"]
+        parsed_address = self.parse(address)
+        if address != "RepeatedLabelError":
             return Response(
                 {
                     "input_string": request.GET["address"],
-                    "address_components": address[0],
-                    "address_type": address[1]
+                    "address_components": parsed_address[0],
+                    "address_type": parsed_address[1]
                 }
             )
         else:
-            return HttpResponseBadRequest("Repeated Label Error")
+            return HttpResponseBadRequest("RepeatedLabelError")
 
     def parse(self, address):
         # TODO: Implement this method to return the parsed components of a
@@ -37,4 +38,4 @@ class AddressParse(APIView):
             address_type = tagged_address[1]
             return address_components, address_type
         except usaddress.RepeatedLabelError:
-            return "Repeated Label Error"
+            return "RepeatedLabelError"
