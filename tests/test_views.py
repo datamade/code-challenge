@@ -15,5 +15,9 @@ def test_api_parse_succeeds(client):
 def test_api_parse_raises_error(client):
     # TODO: Finish this test. The address_string below will raise a
     # RepeatedLabelError, so ParseAddress.parse() will not be able to parse it.
-    # address_string = '123 main st chicago il 123 main st'
-    pytest.fail()
+    address_string = '123 main st chicago il 123 main st'
+
+    response = client.get("/api/parse/", {"input_string": address_string})
+
+    if not response.status_code == 400:
+        pytest.fail("API end point is accepting erroneous data")
