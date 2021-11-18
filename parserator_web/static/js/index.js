@@ -14,6 +14,7 @@
             input_string: document.getElementById('address').value
          },
          success: function(data) {
+            alert(data['input_string'])
          }
       })
 
