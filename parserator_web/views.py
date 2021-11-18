@@ -17,6 +17,10 @@ class AddressParse(APIView):
         # TODO: Flesh out this method to parse an address string using the
         # parse() method and return the parsed components to the frontend.
         user_input = request.query_params['input_string']
+
+        if not user_input:
+            raise ParseError(detail="No value provided")
+
         parsed = self.parse(user_input)
 
         response_data = {

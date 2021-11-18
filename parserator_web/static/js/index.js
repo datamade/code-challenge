@@ -3,14 +3,14 @@ in the #address-results div. */
 
 'use strict'
 
-fillAddressResults = function (data) {
+function fillAddressResults (data) {
 
   // Unhide the results table and grab the table element for results filling
   document.getElementById('address-results').style = "display:block"
-  tblbdy = document.querySelector('table.table tbody')
+  var tblbdy = document.querySelector('table.table tbody')
 
-  keys = Object.keys(data['address_components'])
-  componentLength = keys.length
+  var keys = Object.keys(data['address_components'])
+  var componentLength = keys.length
 
 
   for (var i = 0; i < componentLength; i++) {
