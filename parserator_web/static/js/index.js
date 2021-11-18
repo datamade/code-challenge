@@ -9,7 +9,8 @@ function successResults (data) {
   document.getElementById('error-results').style = "display:none"
   // Unhide the results table and grab the table element for results filling
   document.getElementById('address-results').style = "display:block"
-  var tblbdy = document.querySelector('table.table tbody')
+  var oldTblBdy = document.querySelector('table.table tbody')
+  var newTblBdy = document.createElement('tbody')
 
   var keys = Object.keys(data['address_components'])
   var componentLength = keys.length
@@ -31,8 +32,10 @@ function successResults (data) {
     row.appendChild(addressCell)
     row.appendChild(tagCell)
 
-    tblbdy.appendChild(row)
+    newTblBdy.appendChild(row)
   }
+
+  oldTblBdy.parentNode.replaceChild(newTblBdy, oldTblBdy)
 }
 
 function failedResults (data) {
@@ -44,7 +47,6 @@ function failedResults (data) {
 
   errorDiv.style = "display:block"
   errorDiv.innerHTML = data.responseJSON.detail
-
 
 }
  
