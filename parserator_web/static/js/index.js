@@ -3,8 +3,10 @@ in the #address-results div. */
 
 'use strict'
 
-function fillAddressResults (data) {
+function successResults (data) {
 
+  // If previous errors, hide the div
+  document.getElementById('error-results').style = "display:none"
   // Unhide the results table and grab the table element for results filling
   document.getElementById('address-results').style = "display:block"
   var tblbdy = document.querySelector('table.table tbody')
@@ -32,6 +34,19 @@ function fillAddressResults (data) {
     tblbdy.appendChild(row)
   }
 }
+
+function failedResults (data) {
+
+  // If previous parse exists, hide the div
+  document.getElementById('address-results').style = "display:none"
+
+  var errorDiv = document.getElementById('error-results')
+
+  errorDiv.style = "display:block"
+  errorDiv.innerHTML = data.responseJSON.detail
+
+
+}
  
 
 // Add the API call to the submit button from the form
@@ -47,7 +62,10 @@ document.getElementById('submit').addEventListener('click',function (event) {
       input_string: document.getElementById('address').value
     },
     success: function (data) {
-      fillAddressResults(data)
+      successResults(data)
+    },
+    error: function (data) {
+      failedResults(data)
     }
   })
 
