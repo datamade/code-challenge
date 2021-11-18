@@ -5,7 +5,7 @@ in the #address-results div. */
 
 function successResults (data) {
 
-  // If previous errors, hide the div
+  // If previous errors, hide the error div and show results only
   document.getElementById('error-results').style = "display:none"
   // Unhide the results table and grab the table element for results filling
   document.getElementById('address-results').style = "display:block"
@@ -19,7 +19,7 @@ function successResults (data) {
   for (var i = 0; i < componentLength; i++) {
 
     // A bit verbose, but address component length will be variable based on user input
-    // loop through all of the components and fill the table
+    // loop through all of the components and fill a new table to replace the old
 
     var row = document.createElement("tr")
     var addressCell = document.createElement("td")
@@ -40,7 +40,7 @@ function successResults (data) {
 
 function failedResults (data) {
 
-  // If previous parse exists, hide the div
+  // If a previous parse exists, hide the address div
   document.getElementById('address-results').style = "display:none"
 
   var errorDiv = document.getElementById('error-results')
@@ -57,7 +57,7 @@ document.getElementById('submit').addEventListener('click',function (event) {
   event.preventDefault()
 
   $.ajax({
-    url: 'http://localhost:8000/api/parse',
+    url: '/api/parse/',
     datatype: 'json',
     type: 'GET',
     data: {

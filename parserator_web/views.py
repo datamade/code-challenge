@@ -26,7 +26,7 @@ class AddressParse(APIView):
             }
         else:
             # Return error if user did not provide a string
-            raise ParseError(detail="Please provide a value to parse")
+            raise ParseError(detail="Please provide a value to parse.")
         return Response(response_data)
 
     def parse(self, address):
