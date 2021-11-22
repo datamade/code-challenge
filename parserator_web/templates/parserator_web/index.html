@@ -29,7 +29,7 @@
               <p id="demo"></p>
             </tr>
           </thead>
-          <tbody>
+          <tbody id="table-body">
           </tbody>
         </table>
       </div>
@@ -43,7 +43,7 @@
    // connect form to api  -- step3
     //const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value; 
     document.querySelector('#form').addEventListener('submit', 
-      function() {
+      async function() {
         event.preventDefault();
         document.getElementById("address-results").style ="";
         document.getElementById("demo").innerHTML = this.elements.address.value;
@@ -56,30 +56,89 @@
           method: "get",
           headers: headers,
           body: JSON.stringify(this.elements.address.value)
-        }; 
-        /*
-        let response = await fetch('api/parse/', options);
-        if (response.ok) { // if HTTP-status is 200-299 //step 4
-        // get the response body (the method explained below)
+        };
+        let response = await fetch('api/parse/');//, options);
+        if (response.ok) {
           let json = await response.json();
-          document.getElementById("address-results").style ="";
-          document.getElementById("demo").innerHTML = json.getObject("address_components");
-          let li = `<tr><th>Name</th><th>Email</th></tr>`;
+          let street_components = JSON.parse(JSON.stringify(json.address_components));
+          let street_type = json.address_type;
+          document.getElementById("parse-type").textContent += street_type;
+          let li = ``;
+          Object.entries(street_components).forEach(([key, value]) => {
+            //alert(`${key} ${value}`);
+            li +=`<tr>
+                    <td>${value}</td>        
+                    <td>${key} </td>
+                  </tr>`;
+            //document.getElementById("address-results").append("<tr> <td> ${key} </td> <td> ${value} </td> </tr>");
+          });
+          document.getElementById("table-body").innerHTML = li;
+          //document.getElementById(“parse-type”).append(street_type);
+        }else{
+          alert("fuck"); // handle errors on parse
+        }
+
+        //alert(myobj.StreetName);
+        //alert(response)
+        //let response = fetch('api/parse/')
+        //if () { // if HTTP-status is 200-299 //step 4
+        // get the response body (the method explained below)
+
+          //let json = response.json();
+         // alert("hereeee, finally")
+        //}else{
+         // alert("fuckity")
+        //}  
+  //      alert(json.toString())
+    //    document.getElementById("address-results").style ="";
+
+      //  document.getElementById("demo").innerHTML = json.getObject("address_components");
+          //let li = `<tr><th>Name</th><th>Email</th></tr>`;
        
           // Loop through each data and add a table row
-          json.forEach(user => {
-            li += `<tr>
-                <td>${user.name} </td>
-                <td>${user.email}</td>        
-            </tr>`;
-          });
+          //json.forEach(user => {
+           // li += `<tr>
+           //     <td>${user.name} </td>
+           //     <td>${user.email}</td>        
+           // </tr>`;
+          //});
   
           // Display result
-          document.getElementById("INSERTNAME").innerHTML = li;
-          } else {
-            alert("HTTP-Error: " + response.status); // change to send server-side error information
-          }
-        */
+          //document.getElementById("INSERTNAME").innerHTML = li;
+          //} else {
+          //  document.getElementById("demo").innerHTML = "you fucked up"; // change to send server-side error information
+          //}
+        //.then(response => response.json())
+        //.then(data => {
+        //  alert(response);
+      //})
+        //.catch((error) => {
+        //    alert(error);
+        //});
+        //alert(response['address_components']);
+        //if (response.ok) { // if HTTP-status is 200-299 //step 4
+        // get the response body (the method explained below)
+//        let json = response.json();
+  //      alert(json.toString())
+    //    document.getElementById("address-results").style ="";
+
+      //  document.getElementById("demo").innerHTML = json.getObject("address_components");
+          //let li = `<tr><th>Name</th><th>Email</th></tr>`;
+       
+          // Loop through each data and add a table row
+          //json.forEach(user => {
+           // li += `<tr>
+           //     <td>${user.name} </td>
+           //     <td>${user.email}</td>        
+           // </tr>`;
+          //});
+  
+          // Display result
+          //document.getElementById("INSERTNAME").innerHTML = li;
+          //} else {
+          //  document.getElementById("demo").innerHTML = "you fucked up"; // change to send server-side error information
+          //}
+          
       }); 
     /*function parseAddress() {
       //get usr information
