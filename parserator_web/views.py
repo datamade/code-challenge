@@ -21,6 +21,7 @@ class AddressParse(APIView):
         #if request.method == 'GET':
 
         #print("request data: ", request.data)
+        print("im here!!!!!!")
         print("here is the request data: ", request.data)
         a, b = self.parse(request.data)
         if a == None or b == None:
