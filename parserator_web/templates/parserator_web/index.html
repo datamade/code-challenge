@@ -11,7 +11,7 @@
       <p>Dealing with some messy or unstructured addresses? We can parse them for you.</p>
       <div class="card card-body bg-light">
         <p><strong>Try it out!</strong> Parse an address in the United States into fields like <code>AddressNumber</code>, <code>StreetName</code> and <code>ZipCode</code>.</p>
-        <form class="form" role="form">
+        <form class="form" role="form" id="api-parse" method="get">
           {% csrf_token %}
           <input name="address" type="text" class="form-control" id="address" placeholder="123 Main St. Suite 100 Chicago, IL">
           <button id="submit" type="submit" class="btn btn-success mt-3">Parse!</button>

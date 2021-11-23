@@ -1,4 +1,5 @@
 import usaddress
+import json
 from django.views.generic import TemplateView
 from rest_framework.views import APIView
 from rest_framework.response import Response
@@ -12,13 +13,15 @@ class Home(TemplateView):
 
 class AddressParse(APIView):
     renderer_classes = [JSONRenderer]
-
     def get(self, request):
-        # TODO: Flesh out this method to parse an address string using the
-        # parse() method and return the parsed components to the frontend.
-        return Response({})
+        #retreive the address portion of the get query
+        address_raw = request.query_params['address']
+        #pass the string to the parse method and return the results as a json response to the get request
+        return Response({AddressParse.parse(self, address_raw)})
 
     def parse(self, address):
-        # TODO: Implement this method to return the parsed components of a
-        # given address using usaddress: https://github.com/datamade/usaddress
-        return address_components, address_type
+        
+        #parse the python dict to json
+        address_components = json.dumps(usaddress.tag(address), indent=2)
+        return address_components
+ 
