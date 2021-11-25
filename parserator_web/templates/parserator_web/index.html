@@ -47,7 +47,6 @@
         let parse_url = 'api/parse/?' + new URLSearchParams({
            input_string: this.elements.address.value.toString()
         });
-        alert(parse_url);
         let response = await fetch(parse_url);
         let json = await response.json();
         document.getElementById("address-results").style =""; //shows the bottom part of page
