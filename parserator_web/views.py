@@ -7,6 +7,8 @@ from rest_framework.parsers import JSONParser
 from pprint import pprint
 #from rest_framework.exceptions import ParseError # for bad parse?
 from rest_framework import status
+import os
+from django import db
 
 
 class Home(TemplateView):
@@ -15,15 +17,14 @@ class Home(TemplateView):
 
 class AddressParse(APIView):
     renderer_classes = [JSONRenderer]
-    #parser_classes = [JSONParser] may need this for later
 
     def get(self, request):
         # Parses an address string using the
         # parse() method and return the parsed components to the frontend.
         a, b = self.parse(request.GET.get('input_string'))
         if b is None: 
-            return Response({'error_message' : a}, 
-                            status = status.HTTP_406_NOT_ACCEPTABLE) 
+            # parsing error
+            return Response({'error_message' : a}, status = status.HTTP_406_NOT_ACCEPTABLE) 
         return Response({
                         "input_string": request.GET.get('input_string'), 
                         "address_components": a, "address_type": b

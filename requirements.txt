@@ -7,3 +7,5 @@ pytest-mock==3.2.0
 whitenoise==5.2.0
 djangorestframework==3.11.1
 usaddress==0.5.10
+# avoid ModuleNotFoundError: No module named 'six'
+six

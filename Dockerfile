@@ -40,3 +40,6 @@ ENV DJANGO_SECRET_KEY 'foobar'
 
 # Build static files into the container
 RUN python manage.py collectstatic --noinput
+
+# Misc. package dependency
+RUN python -m pip install six
