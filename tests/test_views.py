@@ -27,5 +27,4 @@ def test_api_parse_raises_error(client):
     query_string = urlencode(query)
     url = reverse('address-parse') + '?' + query_string
     response = client.get(url) 
-    print(response.status_code)
     assert response.status_code == HTTP_406_NOT_ACCEPTABLE

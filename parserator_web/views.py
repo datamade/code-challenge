@@ -4,11 +4,7 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework.renderers import JSONRenderer
 from rest_framework.parsers import JSONParser
-from pprint import pprint
-#from rest_framework.exceptions import ParseError # for bad parse?
 from rest_framework import status
-import os
-from django import db
 
 
 class Home(TemplateView):
