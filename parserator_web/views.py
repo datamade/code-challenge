@@ -4,6 +4,7 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework.renderers import JSONRenderer
 from rest_framework.exceptions import ParseError
+from rest_framework import status
 
 
 class Home(TemplateView):
@@ -40,9 +41,8 @@ class AddressParse(APIView):
             return Response({
                 'input_string': input_string,
                 'address_components': '',
-                'address_type': 'Invalid',
-                'http_error': '400'
-            })
+                'address_type': 'Invalid',},
+                status=status.HTTP_400_BAD_REQUEST)
 
     def parse(self, address):
         """Returns parsed components and address type of a given address 

@@ -1,69 +1,66 @@
 /* TODO: Flesh this out to connect the form to the API and render results
    in the #address-results div. */
 
-jquery('form').on('submit', function(event){
-   /** Connect the HTML form to the API and render results in the
-   #address-results div. */
+var jquery = $
 
-   // Prevent the page from reloading
-   event.preventDefault();
+jquery('form').on('submit', function (event) {
+  /** Connect the HTML form to the API and render results in the
+  #address-results div. */
 
-   // Clear data from previous queries from the page
-   jquery('tbody').html('')
-   jquery('#address-results').hide()
-   jquery('#error-message').hide()
-   
-   // Load form data into userInput as a JSON object
-   var userInput = jquery('form').serializeArray();
+  // Prevent the page from reloading
+  event.preventDefault()
 
-   // * WIP: Catching bad inputs clientside
-   // if (jquery('#address').val == ''){
-   //    console.log('found it')
-   //    jquery('#error-message').html("Please no.")
-   //    jquery('#error-message').show()
-   //    return false;
-   // }
+  // Clear data from previous queries from the page
+  jquery('tbody').html('')
+  jquery('#address-results').hide()
+  jquery('#error-message').hide()
 
-   // GET request to parserator API
-   jquery.ajax({
-      method: 'GET',
-      url: '/api/parse/',
-      data: userInput,
-      success: function(response){
+  // Load form data into userInput as a JSON object
+  var userInput = jquery('form').serializeArray()
 
-         // Extract data from GET response object
-         var {address_components,address_type,http_error} = response
+  // * WIP: Catching bad inputs clientside
+  // if (jquery('#address').val == ''){
+  //    console.log('found it')
+  //    jquery('#error-message').html("Please no.")
+  //    jquery('#error-message').show()
+  //    return false;
+  // }
 
-         if (http_error !== undefined){
-            /** Catch exceptions stemming from usaddress */
+  // GET request to parserator API
+  jquery.ajax({
+    method: 'GET',
+    url: '/api/parse/',
+    data: userInput,
+    success: function (response) {
+      /**
+       * Display address components, their respective tags, and
+       * address type for street addresses or ambiguous addresses.*/
 
-            // Show error message in the error message div
-            jquery('#error-message').html("Uh oh! That doesn't seem to be a valid address.")
+      // Extract data from GET response object
+      var {address_components,address_type} = response
 
-            // Hide the address component table
-            jquery('#error-message').show()
+      /* Fill the address component table: For each address component,
+      append a row to the table with the component and its tag. */
+      jquery.each(address_components, function (tag, component) {
+        jquery('tbody').append('<tr><td>'+component+'</td><td>'+tag+'</td></tr>')
+      })
 
-         } else {
-            /**
-             * Display address components, their respective tags, and
-             * address type for street addresses or ambiguous addresses.*/
+      // Show filled address component table
+      jquery('#address-results').show()
 
-            // Extract parsed address components from GET response
-            var {address_components,address_type} = response
+      // Display address type in parse-type
+      jquery('#parse-type').html(address_type)
+    },
+    statusCode: {
+      400: function () {
+      /** Catch exceptions stemming from usaddress parseError */
 
-            /* Fill the address component table: For each address component, 
-            append a row to the table with the component and its tag. */
-            jquery.each(address_components, function(tag, component){
-               jquery('tbody').append('<tr><td>'+component+'</td><td>'+tag+'</td></tr>')
-            })
-            
-            // Show filled address component table
-            jquery('#address-results').show();
-            
-            // Display address type in parse-type
-            jquery('#parse-type').html(address_type)
+        // Show error message in the error message div
+        jquery('#error-message').html("Uh oh! That doesn't seem to be a valid address.")
 
-         }
+        // Hide the address component table
+        jquery('#error-message').show()
       }
-   })
+    }
+  })
 })
