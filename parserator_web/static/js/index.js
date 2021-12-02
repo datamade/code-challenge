@@ -1,9 +1,4 @@
-/* TODO: Flesh this out to connect the form to the API and render results
-   in the #address-results div. */
-
-var jquery = $
-
-jquery('form').on('submit', function (event) {
+$('form').on('submit', function (event) {
   /** Connect the HTML form to the API and render results in the
   #address-results div. */
 
@@ -11,23 +6,23 @@ jquery('form').on('submit', function (event) {
   event.preventDefault()
 
   // Clear data from previous queries from the page
-  jquery('tbody').html('')
-  jquery('#address-results').hide()
-  jquery('#error-message').hide()
+  $('tbody').html('')
+  $('#address-results').hide()
+  $('#error-message').hide()
 
   // Load form data into userInput as a JSON object
-  var userInput = jquery('form').serializeArray()
+  var userInput = $('form').serializeArray()
 
-  // * WIP: Catching bad inputs clientside
-  // if (jquery('#address').val == ''){
+  // * WIP: Catch obviously bad inputs clientside
+  // if ($('#address').val == ''){
   //    console.log('found it')
-  //    jquery('#error-message').html("Please no.")
-  //    jquery('#error-message').show()
+  //    $('#error-message').html("Please no.")
+  //    $('#error-message').show()
   //    return false;
   // }
 
   // GET request to parserator API
-  jquery.ajax({
+  $.ajax({
     method: 'GET',
     url: '/api/parse/',
     data: userInput,
@@ -37,29 +32,30 @@ jquery('form').on('submit', function (event) {
        * address type for street addresses or ambiguous addresses.*/
 
       // Extract data from GET response object
+      // pytest Does Not Like this syntax, but from what I can tell it's okay.
       var {address_components,address_type} = response
 
       /* Fill the address component table: For each address component,
       append a row to the table with the component and its tag. */
-      jquery.each(address_components, function (tag, component) {
-        jquery('tbody').append('<tr><td>'+component+'</td><td>'+tag+'</td></tr>')
+      $.each(address_components, function (tag, component) {
+        $('tbody').append('<tr><td>'+component+'</td><td>'+tag+'</td></tr>')
       })
 
       // Show filled address component table
-      jquery('#address-results').show()
+      $('#address-results').show()
 
       // Display address type in parse-type
-      jquery('#parse-type').html(address_type)
+      $('#parse-type').html(address_type)
     },
     statusCode: {
       400: function () {
       /** Catch exceptions stemming from usaddress parseError */
 
         // Show error message in the error message div
-        jquery('#error-message').html("Uh oh! That doesn't seem to be a valid address.")
+        $('#error-message').html("Uh oh! That doesn't seem to be a valid address.")
 
         // Hide the address component table
-        jquery('#error-message').show()
+        $('#error-message').show()
       }
     }
   })

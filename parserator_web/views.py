@@ -17,8 +17,6 @@ class AddressParse(APIView):
     def get(self, request):
         """Returns the string the user sent, the parsed address
         components and the address type if the string is a valid address"""
-        # TODO: Flesh out this method to parse an address string using the
-        # parse() method and return the parsed components to the frontend.
 
         # Get the unparsed address from JSON object query
         input_string = request.query_params['address']
@@ -35,17 +33,19 @@ class AddressParse(APIView):
                 'address_type': address_type
             })
 
-        except:
+        except Exception as e:
 
             # Return the expected dictionary object, but include error info
+            # and set HTTP status to 400
             return Response({
                 'input_string': input_string,
                 'address_components': '',
-                'address_type': 'Invalid',},
+                'address_type': 'Invalid',
+                'error_message': str(e)},  # Currently not used.
                 status=status.HTTP_400_BAD_REQUEST)
 
     def parse(self, address):
-        """Returns parsed components and address type of a given address 
+        """Returns parsed components and address type of a given address
         using usaddress"""
 
         # Use .tag() from usaddress to parse address
