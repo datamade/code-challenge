@@ -6,6 +6,12 @@ from rest_framework.renderers import JSONRenderer
 from rest_framework.exceptions import ParseError
 
 
+ADDRESS_KEY = 'address'
+INPUT_STRING_KEY = 'input_string'
+ADDR_COMPONENTS_KEY = 'address_components'
+ADDR_TYPE_KEY = 'address_type'
+
+
 class Home(TemplateView):
     template_name = 'parserator_web/index.html'
 
@@ -14,11 +20,19 @@ class AddressParse(APIView):
     renderer_classes = [JSONRenderer]
 
     def get(self, request):
-        # TODO: Flesh out this method to parse an address string using the
-        # parse() method and return the parsed components to the frontend.
-        return Response({})
+        try:
+
+            # Pull input string from request and parse it
+            input_string = request.GET[ADDRESS_KEY]
+            address_components, address_type = self.parse(input_string)
+
+            return Response({
+                    INPUT_STRING_KEY: input_string,
+                    ADDR_COMPONENTS_KEY: address_components,
+                    ADDR_TYPE_KEY: address_type
+                })
+        except usaddress.RepeatedLabelError as e:
+            raise ParseError(e)
 
     def parse(self, address):
-        # TODO: Implement this method to return the parsed components of a
-        # given address using usaddress: https://github.com/datamade/usaddress
-        return address_components, address_type
+        return usaddress.tag(address)
