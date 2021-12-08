@@ -11,17 +11,19 @@
       <p>Dealing with some messy or unstructured addresses? We can parse them for you.</p>
       <div class="card card-body bg-light">
         <p><strong>Try it out!</strong> Parse an address in the United States into fields like <code>AddressNumber</code>, <code>StreetName</code> and <code>ZipCode</code>.</p>
-        <form class="form" role="form">
+        <form class="form" role="form" id="parse-form" action="{% url 'address-parse' %}">
           {% csrf_token %}
+          <input type="hidden" id="Url" data-url="{% url 'address-parse' %}" />
           <input name="address" type="text" class="form-control" id="address" placeholder="123 Main St. Suite 100 Chicago, IL">
           <button id="submit" type="submit" class="btn btn-success mt-3">Parse!</button>
         </form>
       </div>
       <!-- TODO: Display parsed address components here. -->
+      <div id="error-results" style="display:none"></div>
       <div id="address-results" style="display:none">
         <h4>Parsing results</h4>
         <p>Address type: <strong><span id="parse-type"></span></strong></p>
-        <table class="table table-bordered">
+        <table id="address-table" class="table table-bordered">
           <thead>
             <tr>
               <th>Address part</th>
