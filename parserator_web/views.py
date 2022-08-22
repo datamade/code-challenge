@@ -23,11 +23,11 @@ class AddressParse(APIView):
         except:
             return Response({
                 'error': 'Invalid address',
-                'message': 'We could not parse that address'
+                'message': 'We were not able to parse that address. Please enter another address and try again.'
             })
         return Response({
             'input_string': input,
-            'address_components': json.dumps(parsed_address[0]),
+            'address_components': parsed_address[0],
             'address_type': parsed_address[1]
         })
       
