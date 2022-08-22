@@ -14,21 +14,27 @@ document.addEventListener('DOMContentLoaded', () => {
    addressForm.onsubmit = () => {
       let addressInput = document.querySelector('#address').value;
 
+      // Clear the form field for the next attempt
+      addressField.value = '';
       // Clear any prior errors
       if (document.querySelector('#error')) {
          document.querySelector('#error').remove();
       }
-      // Hide any prior results 
+      // Clear any prior results 
       if (addressResults.style.display === 'block') {
          addressResults.style.display === 'none';
+         let rows = addressTableBody.getElementsByTagName('tr');
+         // Convert the NodeList to an array to avoid looping over a shrinking NodeList
+         let rowsArray = [...rows];
+         for (let row of rowsArray) {
+            row.remove();
+         }
       }
 
       fetch(`api/parse/?input=${addressInput}`)
       .then(response => response.json())
       .then(data => {
          if (data.error) {
-            // Clear the form field for the next attempt
-            addressField.value = '';
             // Display the error message
             let errorDiv = document.createElement('div');
             errorDiv.id = 'error';
