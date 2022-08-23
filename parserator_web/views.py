@@ -1,4 +1,3 @@
-import json
 import usaddress
 from django.views.generic import TemplateView
 from rest_framework.views import APIView
