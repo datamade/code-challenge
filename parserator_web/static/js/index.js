@@ -24,26 +24,30 @@ submit_button.addEventListener("click", parse_address => {
             console.log(data)
             console.log(data["address_type"])
             let addr_results_div = document.getElementById("address-results");
-            addr_results_div.style.display = 'show';
+            addr_results_div.style.display = 'block';
             let addr_type_strong = document.getElementById("parse-type");
             // var paragraph = document.getElementById("p");
             let addr_type_text = document.createTextNode(data["address_type"]);
             addr_type_strong.appendChild(addr_type_text);
 
-            let comp_table_body = addr_results_div.children[2].children[1]
-            for (let component in data["address_components"]) {
-               let tr = document.createElement("tr");
-               let th1 = document.createElement("th");
-               let th2 = document.createElement("th");
-               let addr_comp_type = document.createTextNode(component[0]);
-               let addr_comp_text = document.createTextNode(component[1]);
-               th1.appendChild(addr_comp_type);
-               th2.appendChild(addr_comp_text);
-               tr.appendChild(th1);
-               tr.appendChild(th2);
+            // var comp_table_body = addr_results_div.children[2].children[1]
+            // // console.log(data["address_components"])
+            // for (const [key, value] of Object.entries(data["address_components"])) {
+            //    console.log(key);
+            //    console.log(value);
+            //    let tr = document.createElement("tr");
+            //    let th1 = document.createElement("th");
+            //    let th2 = document.createElement("th");
+            //    let addr_comp_type = document.createTextNode(key);
+            //    let addr_comp_text = document.createTextNode(value);
+            //    th1.appendChild(addr_comp_type);
+            //    th2.appendChild(addr_comp_text);
+            //    tr.appendChild(th1);
+            //    tr.appendChild(th2);
 
-               comp_table_body.appendChild(tr);
-            }
+            //    comp_table_body.appendChild(tr);
+            //    console.log(comp_table_body);
+            // }
          })
       } else {
          console.log("API error", response["status"]);
