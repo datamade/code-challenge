@@ -1,7 +1,7 @@
 /* TODO: Flesh this out to connect the form to the API and render results
    in the #address-results div. */
 
-document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener('DOMContentLoaded', function() {
 
    // Get the relevant page elements
    const addressForm = document.querySelector('form');
