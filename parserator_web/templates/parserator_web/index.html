@@ -14,7 +14,7 @@
         <form class="form" role="form">
           {% csrf_token %}
           <input name="address" type="text" class="form-control" id="address" placeholder="123 Main St. Suite 100 Chicago, IL">
-          <button id="submit" type="submit" class="btn btn-success mt-3">Parse!</button>
+          <button id="submit" type="submit" class="btn btn-success mt-3" >Parse!</button>
         </form>
       </div>
       <!-- TODO: Display parsed address components here. -->
@@ -38,5 +38,40 @@
 {% endblock %}
 
 {% block extra_js %}
-  <script src="{% static 'js/index.js' %}"></script>
+  <script>
+  var current_url=window.location.href;
+  const match_string = "address=([A-Za-z0-9+]+)";
+  if (current_url.match(match_string)) {
+  var url= "{% url 'address-parse'  %}?"+current_url.match(match_string)[0];
+
+  var a=fetch(url);
+  var resultsPrint= document.getElementById("address-results");
+  resultsPrint.style.display="table";
+  var json=a.then((response)=> { return response.json();});
+  json.then((data) =>{
+  process_data(data);
+  });
+}
+function process_data(data) {
+    var address_type=data.address_type;
+    if (address_type=="Error"){
+    resultsPrint.innerHTML="There was an error with that address";
+    }
+    else{
+    var address_components=data["address_components"];
+    for(var key in address_components){
+        var tableBody = resultsPrint.getElementsByTagName("tbody")[0];
+      const trElement=document.createElement('tr');
+      const addressPartElement=document.createElement('td');
+      const tagElement=document.createElement('td');
+      addressPartElement.innerHTML = address_components[key];
+      tagElement.innerHTML = key;
+      trElement.appendChild(addressPartElement);
+      trElement.appendChild(tagElement);
+      tableBody.appendChild(trElement);
+    }
+    document.getElementById("parse-type").innerHTML= data["address_type"];
+    }
+    }
+  </script>
 {% endblock %}
