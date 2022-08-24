@@ -54,8 +54,8 @@
 }
 function process_data(data) {
     var address_type=data.address_type;
-    if (address_type=="Error"){
-    resultsPrint.innerHTML="There was an error with that address";
+    if (address_type.startsWith("Error")){
+    resultsPrint.innerHTML=address_type;
     }
     else{
     var address_components=data["address_components"];

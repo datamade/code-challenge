@@ -20,8 +20,8 @@ class AddressParse(APIView):
             return Response({"input_string": input_string,
                              "address_components": address_components,
                              "address_type": address_type})
-        except usaddress.RepeatedLabelError:
-            return Response({"address_type": "Error"})
+        except usaddress.RepeatedLabelError as err:
+            return Response({"address_type": f"Error: {err=}"})
 
     def parse(self, address):
         address_components, address_type = usaddress.tag(address)
