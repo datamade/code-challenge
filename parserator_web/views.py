@@ -28,7 +28,7 @@ class AddressParse(APIView):
          return Response({'input_string':input_string, 'address_components':address_components, 'address_type':address_type})
 
         except usaddress.RepeatedLabelError:
-            #not sure how to implement ParseError
+            #not sure how to implement ParseError, maybe add Response? 
             return ParseError
 
 
