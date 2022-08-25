@@ -1,5 +1,6 @@
 # DataMade Code Challenge: Parserator
 
+NW Test Commit
 Welcome to the DataMade code challenge! 👋
 
 Your task is to recreate the **address parsing form** in DataMade's
@@ -65,7 +66,7 @@ three pieces of data:
 
 - `input_string`: The string that the user sent
 - `address_components`: A dictionary of parsed components that comprise the address,
-   in the format `{address_part: tag}` (returned by `AddressParse.parse()`)
+  in the format `{address_part: tag}` (returned by `AddressParse.parse()`)
 - `address_type`: A string representing type of the parsed address (returned by `AddressParse.parse()`)
 
 Don't forget to handle strings that cannot be parsed and return errors!
