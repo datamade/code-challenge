@@ -17,28 +17,23 @@ class AddressParse(APIView):
     def get(self, request):
         # TODO: Flesh out this method to parse an address string using the
         # parse() method and return the parsed components to the frontend.
+        input_string = request.GET["address"]
 
-             # need to return: 
+        try:
+            # need to return: 
              # input_string: The string that the user sent
              # address_components: A dictionary of parsed components that comprise the address, in the format {address_part: tag} (returned by AddressParse.parse())
              # address_type: A string representing type of the parsed address (returned by AddressParse.parse())
-        # Don't forget to handle strings that cannot be parsed and return errors! -- ParseError
-        #Query params?? 
+         address_components, address_type = self.parse(input_string)
+         return Response({'input_string':input_string, 'address_components':address_components, 'address_type':address_type})
 
-        # peel off addy from request - query params? 
-        # call custom parse helper w addy
-        # return a response w formatted parsed address 
-        pprint(request)
-        self.parse('123 Main Street Chicago, IL')
+        except usaddress.RepeatedLabelError:
+            #not sure how to implement ParseError
+            return ParseError
 
-        return Response({}) 
-    
 
     def parse(self, address):
-       
-        response =  usaddress.tag(address)
-        pprint("printing parse method response")
-        pprint(response)
-        # TODO: Implement this method to return the parsed components of a
-        # given address using usaddress: https://github.com/datamade/usaddress
-        return response.address_components, response.address_type
+       # Use usaddress parse method to get components and type
+        address_components, address_type =  usaddress.tag(address)
+
+        return address_components, address_type
