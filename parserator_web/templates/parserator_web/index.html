@@ -20,7 +20,7 @@
       <!-- TODO: Display parsed address components here. -->
       <div id="address-results" style="display:none">
         <h4>Parsing results</h4>
-        <p>Address type: <strong><span id="parse-type"></span></strong></p>
+        <p id="hi">Address type: <strong><span id="parse-type"></span></strong></p> 
         <table class="table table-bordered">
           <thead>
             <tr>
@@ -38,5 +38,57 @@
 {% endblock %}
 
 {% block extra_js %}
-  <script src="{% static 'js/index.js' %}"></script>
+
+  <script>
+
+    const userInput = document.querySelector("#address");
+    const submitButton = document.querySelector("#submit");
+    submitButton.addEventListener('click', getText, true);
+
+    function getText(event) {
+      event.preventDefault();
+      console.log(userInput.value);
+
+      fetch('http://localhost:8000/api/parse/', {
+    
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          'address': userInput.value
+        }),
+        })
+        .then(response => response.json())
+        .then(data => {
+
+          const addressComponents = data['return_data']['address_components']
+          const addressType = data['return_data']['address_type']
+          const inputString = data['return_data']['input_string']
+          const addressTypeAppend = document.querySelector("#parse-type")
+          const tableBody = document.querySelector("tbody")
+
+          document.querySelector("#address-results").style.display = '';
+          addressTypeAppend.innerHTML = addressType;
+         
+          console.log('Did it!!')
+
+          for (let i = 0; i < addressComponents.length; i++) {
+            const tr = document.createElement('tr');
+            tableBody.appendChild(tr);
+            for (let j = 0; j < addressComponents[i].length; j++) {
+              const td = document.createElement('td');
+              td.appendChild(document.createTextNode(`${addressComponents[i][j]}`));
+              tr.appendChild(td);
+            }
+          }
+
+        }) 
+        .catch(err => console.log(err))
+       
+    };
+
+
+  </script>
+
 {% endblock %}
