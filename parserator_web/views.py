@@ -17,6 +17,7 @@ class AddressParse(APIView):
         # Parse an address string using the
         # parse() method and return the parsed components to the frontend.
         address_components, address_type = self.parse(request)
+        # TODO handle invalid input
         return Response({
             'input_string': request,
             'address_components': address_components,
