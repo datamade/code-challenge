@@ -29,6 +29,9 @@ this challenge and some takeaway learnings from this process.
 * run `docker-compose up`
 * Open  http://localhost:8000 and check out the app!
 
+## Run Unit Tests
+* run `docker-compose -f docker-compose.yml -f tests/docker-compose.yml run --rm app`
+
 ## **Key Takeaways**
 For the sake of honoring the ethos of work-life balance, I initially set out to give myself a limit of 10 hours to complete this challenge. Though the prompt suggested a 2 hour time block to complete, I anticipated I would need to spend a fair amount of time at the onset to familiarize myself with Python and Django, since my area of familiarity lies primarily in JavaScript/HTML/CSS land. To be honest, I lost track of how much time I spent, because once I got in the groove I had a lot of fun learning about building out a back end and getting a refresher on vanilla JS. 
 
