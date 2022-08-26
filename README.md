@@ -1,6 +1,5 @@
 # DataMade Code Challenge: Parserator
 
-NW Test Commit
 Welcome to the DataMade code challenge! 👋
 
 Your task is to recreate the **address parsing form** in DataMade's
