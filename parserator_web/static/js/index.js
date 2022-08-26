@@ -20,21 +20,22 @@ async function submitAddress(address) {
    try {
       // TODO submit results to API properly
       var res = await fetch("api/parse?address=" + address);
-      var data = await res.json();
-      console.log(res);
-      renderAddress("Address Type", []);
+      var parseResponse = await res.json();
+      renderAddress(parseResponse);
    } catch (error) {
       console.log(error);
    }
 }
 
-function renderAddress(addressType, addressComponents) {
+function renderAddress(parseResponse) {
+   console.log(parseResponse.input_string);
    // TODO render results in the #address-results div
 
    // Write Address Type text
-   $("#parse-type").text(addressType);
+   $("#parse-type").text(parseResponse.address_type);
 
    // TODO Write Address Components table
+   console.log(parseResponse.address_components)
 
    // Set Address Results div to show
    $("#address-results").css("display", '');

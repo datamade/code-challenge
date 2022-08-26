@@ -14,12 +14,20 @@ class AddressParse(APIView):
     renderer_classes = [JSONRenderer]
 
     def get(self, request):
+        # request uses: https://www.django-rest-framework.org/api-guide/requests/
+
         # Parse an address string using the
         # parse() method and return the parsed components to the frontend.
-        address_components, address_type = self.parse(request)
+        # address_components, address_type = self.parse(request)
+
+        input_address = request.query_params['address']
+        address_components = []
+        address_type = "Test Type"
+        
         # TODO handle invalid input
+        
         return Response({
-            'input_string': request,
+            'input_string': input_address,
             'address_components': address_components,
             'address_type': address_type
         })
