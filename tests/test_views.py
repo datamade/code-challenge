@@ -1,14 +1,14 @@
 def test_api_parse_succeeds(client):
-    address_string = '3733 Southport Ave, Chicago, IL'
+    address_string = '123 main st chicago il'
     response = client.get(f"/api/parse/?address={address_string}")
 
     expected_response = {
         'input_string': address_string,
-        'address_components': {'AddressNumber': '3733',
-        'StreetName': 'Southport',
-        'StreetNamePostType': 'Ave',
-        'PlaceName': 'Chicago',
-        'StateName': 'IL'
+        'address_components': {'AddressNumber': '123',
+        'StreetName': 'main',
+        'StreetNamePostType': 'st',
+        'PlaceName': 'chicago',
+        'StateName': 'il'
         },
         'address_type': 'Street Address'  
     }
