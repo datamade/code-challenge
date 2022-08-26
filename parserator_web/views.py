@@ -18,6 +18,9 @@ class AddressParse(APIView):
         # parse() method and return the parsed components to the frontend.
         address_request = request.query_params.get('address')
         parsed_request = AddressParse.parse(self, address_request)
+
+        # Implement error handling for bad address string!
+
         return Response({'requested_address': address_request,
                          'address_parts': parsed_request[0], 'address_type': parsed_request[1]})
 
