@@ -1,10 +1,9 @@
 
 /**
- * query selectors for button, user input, and query results
+ * query selectors for button and user input
  */
-const submitButton = document.querySelector(".btn")
+const submitButton = document.querySelector("button")
 const addressInput = document.querySelector(".form-control")
-const addressResults = document.querySelector(".address-results")
 
 /** check if input is correct type before sending query
   * @param {string} input - user's address input
@@ -66,10 +65,10 @@ const toggleView = (isShown, id) => {
  * clean up function to set up input for new address inputs
  */
 const resetDisplay = () => {
-   toggleView(false, addressResults)
-   setInnerHTML(false, '.error')
-   setInnerHTML('.table')
-   setInnerHTML('#parse-type')
+   toggleView(false, "#address-results")
+   toggleView(false, '.error')
+   setInnerHTML('.table', '')
+   setInnerHTML('#parse-type', '')
 }
 
 /**
@@ -93,6 +92,7 @@ const parseUserInput = event => {
    resetDisplay()
    try {
       const input = addressInput.value
+      console.log(input)
       if(!checkInput) {
          return   
       }
@@ -104,13 +104,13 @@ const parseUserInput = event => {
             }
          displayResults(result)
       })
-   } catch(error) {
+   } catch (error) {
       toggleView(true, '.error')
       console.error('Error found in parseUserInput', error)
    }
 }
 
 
-submitButton.addEventListener("click", displayResults)
+submitButton.addEventListener("click", parseUserInput)
 
 
