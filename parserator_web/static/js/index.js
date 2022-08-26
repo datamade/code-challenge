@@ -19,17 +19,13 @@ function submitAddress() {
       return;
    }
    try {
-      fetch(url).then(res => handleResponse(res));
+      $.get(url, function (data) {
+         writeResults(data.address_type, data.address_components);
+      }).fail(function (data) {
+         writeError(data.responseJSON.detail);
+      })
    } catch (error) {
       writeError("Something went wrong, please try again.");
-   }
-}
-
-function handleResponse(response) {
-   if (response.ok) {
-      response.json().then(jsonData => writeResults(jsonData.address_type, jsonData.address_components));
-   } else {
-      response.json().then(jsonData => writeError(jsonData.detail));
    }
 }
 
@@ -43,7 +39,7 @@ function writeAddressComponents(addressComponents) {
    $("#address-parts").empty();
    for (var component in addressComponents) {
       if (Object.prototype.hasOwnProperty.call(addressComponents, component)) {
-         var row = `<tr><td>${addressComponents[component]}</td><td>${component}</td></tr>`
+         var row = '<tr><td>' + addressComponents[component] + '</td><td>' + component + '</td></tr>';
          $("#address-parts").append(row);
       }
    }
@@ -76,10 +72,10 @@ function hide(id) {
 
 function showOrHideById(id, show) {
    var setting = show ? '' : 'none';
-   $(`#${id}`).css("display", setting);
+   $("#" + id).css("display", setting);
 }
 
 
 function writeTextById(id, text) {
-   $(`#${id}`).text(text);
+   $("#" + id).text(text);
 }
