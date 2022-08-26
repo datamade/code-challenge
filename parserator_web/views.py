@@ -26,7 +26,6 @@ class AddressParse(APIView):
                 'address_type': address_type
             })
         except Exception as e:
-            # TODO better handle parse error?
             raise ParseError(e)
 
     def parse(self, address):
