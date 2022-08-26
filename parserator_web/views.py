@@ -20,7 +20,7 @@ class AddressParse(APIView):
         # Parse an address string using the
         # parse() method and return the parsed components to the frontend.
         try:
-            address_components, address_type = self.parse(request)
+            address_components, address_type = self.parse(input_address)
             return Response({
                 'input_string': input_address,
                 'address_components': address_components,
