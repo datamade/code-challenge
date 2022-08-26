@@ -19,8 +19,7 @@ function submitAddress() {
       return;
    }
    try {
-      fetch(url)
-         .then((res) => handleResponse(res));
+      fetch(url).then(res => handleResponse(res));
    } catch (error) {
       writeError("Something went wrong, please try again.");
    }
@@ -28,13 +27,9 @@ function submitAddress() {
 
 function handleResponse(response) {
    if (response.ok) {
-      response.json().then(jsonData => {
-         writeResults(jsonData.address_type, jsonData.address_components);
-      });
+      response.json().then(jsonData => writeResults(jsonData.address_type, jsonData.address_components));
    } else {
-      response.json().then(jsonData => {
-         writeError(jsonData.detail);
-      });
+      response.json().then(jsonData => writeError(jsonData.detail));
    }
 }
 
