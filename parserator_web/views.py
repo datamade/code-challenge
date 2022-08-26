@@ -14,7 +14,9 @@ class AddressParse(APIView):
     renderer_classes = [JSONRenderer]
 
     def get(self, request):
-        input_address = request.query_params['address']
+        input_address = request.GET.get('address', "")
+        if input_address == "":
+            raise ParseError("Non-blank address query param must be provided.")
 
         try:
             address_components, address_type = self.parse(input_address)
@@ -24,6 +26,7 @@ class AddressParse(APIView):
                 'address_type': address_type
             })
         except Exception as e:
+            # TODO better handle parse error?
             raise ParseError(e)
 
     def parse(self, address):
