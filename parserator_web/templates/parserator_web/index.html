@@ -18,25 +18,27 @@
         </form>
       </div>
       <br>
-      <!-- Displays Error here. -->
-      <div id="error" style="background-color: red; color: white; padding: 5px; display:none;">
-        <h4>Error</h4>
-        <p id="error-message"></p>
-      </div>
-      <!-- Displays parsed address components here. -->
       <div id="address-results" style="display:none">
-        <h4>Parsing results</h4>
-        <p>Address type: <strong><span id="parse-type"></span></strong></p>
-        <table class="table table-bordered">
-          <thead>
-            <tr>
-              <th>Address part</th>
-              <th>Tag</th>
-            </tr>
-          </thead>
-          <tbody id="address-parts">
-          </tbody>
-        </table>
+        <!-- Displays Error here. -->
+        <div id="error" style="background-color: red; color: white; padding: 5px; display:none;">
+          <h4>Error</h4>
+          <p id="error-message"></p>
+        </div>
+        <!-- Displays Parsed Components here. -->
+        <div id="success" style="display:none">
+          <h4>Parsing results</h4>
+          <p>Address type: <strong><span id="parse-type"></span></strong></p>
+          <table class="table table-bordered">
+            <thead>
+              <tr>
+                <th>Address part</th>
+                <th>Tag</th>
+              </tr>
+            </thead>
+            <tbody id="address-parts">
+            </tbody>
+          </table>
+        </div>
       </div>
     </div>
   </div>

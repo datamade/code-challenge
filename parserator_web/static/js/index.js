@@ -36,7 +36,7 @@ function handleResponse(response) {
 function writeResults(addressType, addressComponents) {
    writeTextById("parse-type", addressType);
    writeAddressComponents(addressComponents);
-   showResults();
+   showSuccess();
 }
 
 function writeAddressComponents(addressComponents) {
@@ -54,14 +54,16 @@ function writeError(message) {
    showError();
 }
 
-function showResults() {
-   hide("error")
-   show("address-results")
+function showSuccess() {
+   hide("error");
+   show("success");
+   show("address-results");
 }
 
 function showError() {
-   hide("address-results")
-   show("error")
+   hide("success");
+   show("error");
+   show("address-results");
 }
 
 function show(id) {
