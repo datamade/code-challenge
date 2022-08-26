@@ -24,12 +24,9 @@ class AddressParse(APIView):
                 'address_type': address_type
             })
         except Exception as e:
-            message = f"Sorry, we failed to parse the submitted address. Check for errors or try a different format."
-            raise ParseError(message)
+            raise ParseError(e)
 
     def parse(self, address):
-        # Returns the parsed components of a
-        # given address using usaddress: https://github.com/datamade/usaddress
         parse_result = usaddress.tag(address)
         address_components = parse_result[0]
         address_type = parse_result[1]
