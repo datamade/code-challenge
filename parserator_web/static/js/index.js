@@ -59,20 +59,52 @@ const toggleView = (isShown, id) => {
    showDiv.style = isShown ? "" : "display:none"
 }
 
+/**
+ * clean up function to set up input for new address inputs
+ */
+const resetDisplay = () => {
+   toggleView(false, addressResults)
+   //cover error handling
+   setInnerHTML('.table')
+   setInnerHTML('#parse-type')
+}
 const displayError = () => {
    //add error area in HTML?
 }
+const displayResults = result => {
+   const addressType = result['address_type']
+   const addressComponents = result['address_components']
+   setInnerHTML('.table', formatParsedAddress(addressComponents))
+   setInnerHTML('#parse-type', addressType)
+   toggleView(true, '#address-results')
+}
 
+/**
+ * 
+ */
 
-const displayResults = (e) => {
-   e.preventDefault()
-   if (Event.target == submitButton) {
-      sendAddress(addressInput.value)
+const parseUserInput = event => {
+   event.preventDefault()
+   resetDisplay()
+   try {
+      const input = addressInput.value
+      if(!checkInput) {
+         return   
+      }
+      fetchAddress(input)
          .then((result) => {
-
-         })
+            if(result['error']) {
+               toggleView(true, '.error')
+               return
+            }
+         displayResults(result)
+      })
+   } catch(error) {
+      toggleView(true, '.error')
+      console.error('Error found in parseUserInput', error)
    }
 }
+
 
 submitButton.addEventListener("click", displayResults)
 
