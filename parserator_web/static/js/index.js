@@ -1,7 +1,10 @@
+
+/**
+ * query selectors for button, user input, and query results
+ */
 const submitButton = document.querySelector(".btn")
 const addressInput = document.querySelector(".form-control")
 const addressResults = document.querySelector(".address-results")
-const resultsTable = document.querySelector(".results-table")
 
 /** check if input is correct type before sending query
   * @param {string} input - user's address input
@@ -64,13 +67,15 @@ const toggleView = (isShown, id) => {
  */
 const resetDisplay = () => {
    toggleView(false, addressResults)
-   //cover error handling
+   setInnerHTML(false, '.error')
    setInnerHTML('.table')
    setInnerHTML('#parse-type')
 }
-const displayError = () => {
-   //add error area in HTML?
-}
+
+/**
+ * @param {Object} result - parsed query body
+ * displays user results if query is successful 
+ */
 const displayResults = result => {
    const addressType = result['address_type']
    const addressComponents = result['address_components']
@@ -80,7 +85,7 @@ const displayResults = result => {
 }
 
 /**
- * 
+ * @param {event} - submit button event
  */
 
 const parseUserInput = event => {
