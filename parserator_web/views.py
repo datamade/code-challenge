@@ -4,6 +4,7 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework.renderers import JSONRenderer
 from rest_framework.exceptions import ParseError
+from urllib.parse import unquote
 
 
 class Home(TemplateView):
@@ -14,14 +15,15 @@ class AddressParse(APIView):
     renderer_classes = [JSONRenderer]
 
     def get(self, request):
-        input_address = request.GET.get('address', "")
-        if input_address == "":
+        address_query_param = request.GET.get('address', "")
+        if address_query_param == "":
             raise ParseError("Non-blank address query param must be provided.")
+        input_string = unquote(address_query_param)
 
         try:
-            address_components, address_type = self.parse(input_address)
+            address_components, address_type = self.parse(input_string)
             return Response({
-                'input_string': input_address,
+                'input_string': input_string,
                 'address_components': address_components,
                 'address_type': address_type
             })

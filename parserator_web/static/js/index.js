@@ -27,8 +27,8 @@ function submitAddress () {
 }
 
 function getAddress () {
-  var address = $("#address").val()
-  return address.trim().replaceAll(" ", "+")
+  var address = $("#address").val().trim()
+  return encodeURIComponent(address)
 }
 
 function writeResults (addressType, addressComponents) {
@@ -78,7 +78,6 @@ function showOrHideById (id, show) {
   var setting = show ? '' : 'none'
   $("#" + id).css("display", setting)
 }
-
 
 function writeTextById (id, text) {
   $("#" + id).text(text)

@@ -1,11 +1,11 @@
 import ast
+from urllib.parse import quote_plus
 
 
 def test_api_parse_succeeds(client, mocker):
     # Arrange
     address_string = '123 main st chicago il'
-    prepared_string = address_string.replace(" ", "+")
-    url = "/api/parse/?address=" + prepared_string
+    url = "/api/parse/?address=" + quote_plus(address_string)
 
     # Mock a healthy usaddress response.
     # We mock because we don't need to test the usaddress library.
@@ -35,8 +35,7 @@ def test_api_parse_succeeds(client, mocker):
 def test_api_parse_raises_error_if_usaddress_raises_error(client, mocker):
     # Arrange
     address_string = '123 main st chicago il 123 main st'
-    prepared_string = address_string.replace(" ", "+")
-    url = "/api/parse/?address=" + prepared_string
+    url = "/api/parse/?address=" + quote_plus(address_string)
 
     # Mock an Exception within usaddress.
     # We mock because we don't need to test the usaddress library.
