@@ -36,8 +36,14 @@ function writeResults(addressType, addressComponents) {
    // Write Address Type text
    $("#parse-type").text(addressType);
 
-   // TODO Write Address Components table
-   console.log(addressComponents);
+   // Write Address Components table
+   $("#address-parts").empty();
+   for (var component in addressComponents) {
+      if (Object.prototype.hasOwnProperty.call(addressComponents, component)) {
+         var row = `<tr><td>${addressComponents[component]}</td><td>${component}</td></tr>`
+         $("#address-parts").append(row);
+      }
+   }
 
    showResults();
 }
