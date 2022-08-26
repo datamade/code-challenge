@@ -10,11 +10,16 @@ $('.form').on('submit', function (event) {
 
 function submitAddress () {
   var address = getAddress()
-  var url = "api/parse?address=" + getAddress()
   if (address === "") {
     writeError("Please enter an address.")
     return
+  } else {
+    makeParseAddressRequest(address)
   }
+}
+
+function makeParseAddressRequest (address) {
+  var url = "api/parse?address=" + encodeURIComponent(address)
   try {
     $.get(url, function (data) {
       writeResults(data.address_type, data.address_components)
@@ -27,8 +32,8 @@ function submitAddress () {
 }
 
 function getAddress () {
-  var address = $("#address").val().trim()
-  return encodeURIComponent(address)
+  var address = $("#address").val()
+  return address.trim()
 }
 
 function writeResults (addressType, addressComponents) {
