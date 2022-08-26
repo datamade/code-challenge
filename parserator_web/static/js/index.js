@@ -2,21 +2,19 @@
    in the #address-results div. */
 
 $('.form').on('submit', function (event) {
-   // Prevent default form submission behavior
    event.preventDefault();
-
-   var address = getAddress();
-   submitAddress(address);
+   submitAddress();
 });
 
 function getAddress() {
-   return $("#address").val().trim();
+   var address = $("#address").val();
+   return address.trim().replaceAll(" ", "+");
 }
 
-async function submitAddress(address) {
-   var preparedAddress = address.replaceAll(" ", "+");
+async function submitAddress() {
+   var url = "api/parse?address=" + getAddress();
    try {
-      fetch("api/parse?address=" + preparedAddress)
+      fetch(url)
          .then((res) => handleResponse(res));
    } catch (error) {
       writeError("Something went wrong, please try again.");
@@ -36,10 +34,12 @@ async function handleResponse(response) {
 }
 
 function writeResults(addressType, addressComponents) {
-   // Write Address Type text
-   $("#parse-type").text(addressType);
+   writeTextById("parse-type", addressType);
+   writeAddressComponents(addressComponents);
+   showResults();
+}
 
-   // Write Address Components table
+function writeAddressComponents(addressComponents) {
    $("#address-parts").empty();
    for (var component in addressComponents) {
       if (Object.prototype.hasOwnProperty.call(addressComponents, component)) {
@@ -47,27 +47,33 @@ function writeResults(addressType, addressComponents) {
          $("#address-parts").append(row);
       }
    }
-
-   showResults();
 }
 
 function writeError(message) {
-   // Write Error Message text
-   $("#error-message").text(message);
-
+   writeTextById("error-message", message);
    showError();
 }
 
-
+function writeTextById(id, text) {
+   $(`#${id}`).text(text);
+}
 
 function showResults() {
-   showOrHideById("error", false)
-   showOrHideById("address-results", true)
+   hide("error")
+   show("address-results")
 }
 
 function showError() {
-   showOrHideById("address-results", false)
-   showOrHideById("error", true)
+   hide("address-results")
+   show("error")
+}
+
+function show(id) {
+   showOrHideById(id, true)
+}
+
+function hide(id) {
+   showOrHideById(id, false)
 }
 
 function showOrHideById(id, show) {
