@@ -1,7 +1,7 @@
 # DataMade Code Challenge: Parserator
 ### **Table of Contents**
 - [About the Challenge](#about-the-challenge)
-- [Key Takeaways](#key-takeaways)
+- [Development Process](#development-process)
 - [Helpful Resources](#helpful-resources)
 - [Where To Find Me](#where-to-find-me)
 
@@ -32,17 +32,35 @@ this challenge and some takeaway learnings from this process.
 ## Run Unit Tests
 * run `docker-compose -f docker-compose.yml -f tests/docker-compose.yml run --rm app`
 
-## **Key Takeaways**
-For the sake of honoring the ethos of work-life balance, I initially set out to give myself a limit of 10 hours to complete this challenge. Though the prompt suggested a 2 hour time block to complete, I anticipated I would need to spend a fair amount of time at the onset to familiarize myself with Python and Django, since my area of familiarity lies primarily in JavaScript/HTML/CSS land. To be honest, I lost track of how much time I spent, because once I got in the groove I had a lot of fun learning about building out a back end and getting a refresher on vanilla JS. 
+## **Development Process**
+### **Timing**
+Though the prompt suggested a 2 hour time block to complete,  I spent significantly longer completing this challenge. While I highly value work-life balance, I enjoyed this opportunity to learn and put in extra effort due to my high interest in working with DataMade.
 
-Before I started coding, I spent solid hour poking around the existing code base to see what I could parse out. I learned that the views, urls, settings, etc. were typical Python file structures. I tried to figure out what would be helpful to understand and what I could ignore, because even with a small application as this challenge I found it easy to get too many fingers in too many figerative code pies, and the last thing I wanted to do was psych myself out of giving it my best shot. After I felt I had a decent understanding of the flow of data, it was time to start coding.
+I anticipated needing to familiarize myself with Python and Django, since my area of familiarity lies primarily in JavaScript/HTML/CSS.
 
-I muddled through various shades of productive struggle to complete Steps 1 and 2 of the challenge, mostly due to being unsure how to receive and read the feedback from my code. I decided to switch to Step 5, the testing portion, to see if I could get my tests to shed light on what my get requests from the `Parserator` API were returning. My experience with TDD using Mocha/Chai helped me understand the basics of Pytest unit testing. I also decided to set up a mock server on Postman to get practice sending requests for testing, though the Parserator docs were my primary source for understanding the shape of my request responses.
+Before I started coding, I spent time exploring the existing code base. I figured out key functions and flows, and also identified what I could ignore. Even with a small application as this challenge, it’s easy to get too many fingers into too many code pies, so I needed to stay focused on deliverables. After understanding the flow of data, it was time to start coding.
 
-I was able to complete the vanilla JS portion with only minor hiccups (after spending the last couple months writing React/TypeScript, I had to brush up a bit on old school DOM manipulation). After implementing TypeScript in my last few React projects, I've grown to appreciate the value of providing types for my code in JS, as it reduces pesky type errors and in my experience, makes it easier for developers unfamiliar with the code to understand the flow of data faster and to feel more confident in contributing to the project. I implemented block tags such as `@param` and `@returns`, which I recently learned about and have used for the first time in this challenge, to provide documentation for what data types each function should expect and return, as well as code comments to provide further context for any developers reading through the code. 
+### **Work Flow**
+Completing Steps 1 and 2 was challenging, mostly due to being unsure of syntax or how to read the feedback from my code since I’d never used Python or Docker to print logs. 
+
+To continue progressing, I switched to Step 5, the testing portion.  That way, I could get my tests to shed light on what my get requests from the `Parserator` API were returning. My experience with TDD using Mocha/Chai helped me understand the basics of Pytest unit testing. 
+
+I also set up a mock server on Postman to get practice sending requests for testing, though the Parserator docs were my primary source for understanding the shape of my request responses.
+
+I completed the vanilla JS portion smoothly and even added some styling!
+
+### **Documentation**
+After implementing TypeScript in my last few React projects, I’ve grown to appreciate the value typing code to reduce pesky type errors. It also helps developers unfamiliar with the code understand the flow of data faster and feel more confident when contributing to a project. 
+
+I implemented block tags such as `@param` and `@returns`, to provide documentation for what data types each function should expect and return, as well as code comments to provide further context for any developers reading through the code.
+
+### **Linter Note**
+* Known linter error related to ES6 module export syntax. Code follows ES6 standards.
 
 ## **Helpful Resources**
-I really struggled to find helpful documentation on Django. I started with their docs, but found them difficult to use for someone so unfamiliar with the framework (and with Python in general). I'm definitely interested in spending more time learning both Python and Django with resources more geared at junior developers. I relied heavily on my googling skills, as well as several of DataMade's docs to get the information I needed to complete this challenge.
+I struggled to find helpful documentation on Django. I started with their docs, but found them difficult to use for someone so unfamiliar with the framework (and with Python in general). I relied heavily on my googling skills, as well as several of DataMade's docs to get the information I needed to complete this challenge.
+
+Despite these hurdles, I'm excited to expand my knowledge of Python and Django. I hope the following resources can help other developers get up to speed more quickly.
 
 ***Resources***
 * [Testing Django with Pytest](https://djangostars.com/blog/django-pytest-testing/)
