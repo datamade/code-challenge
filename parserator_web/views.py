@@ -15,22 +15,19 @@ class AddressParse(APIView):
 
     def get(self, request):
         # request uses: https://www.django-rest-framework.org/api-guide/requests/
+        input_address = request.query_params['address']
 
         # Parse an address string using the
         # parse() method and return the parsed components to the frontend.
-        # address_components, address_type = self.parse(request)
-
-        input_address = request.query_params['address']
-        address_components = []
-        address_type = "Test Type"
-        
-        # TODO handle invalid input
-        
-        return Response({
-            'input_string': input_address,
-            'address_components': address_components,
-            'address_type': address_type
-        })
+        try:
+            address_components, address_type = self.parse(request)
+            return Response({
+                'input_string': input_address,
+                'address_components': address_components,
+                'address_type': address_type
+            })
+        except:
+            raise ParseError(f'The submitted address "{input_address}" was not able to be parsed.')
 
     def parse(self, address):
         # Returns the parsed components of a
