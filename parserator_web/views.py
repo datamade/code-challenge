@@ -14,11 +14,8 @@ class AddressParse(APIView):
     renderer_classes = [JSONRenderer]
 
     def get(self, request):
-        # request uses: https://www.django-rest-framework.org/api-guide/requests/
         input_address = request.query_params['address']
 
-        # Parse an address string using the
-        # parse() method and return the parsed components to the frontend.
         try:
             address_components, address_type = self.parse(input_address)
             return Response({
@@ -26,8 +23,9 @@ class AddressParse(APIView):
                 'address_components': address_components,
                 'address_type': address_type
             })
-        except:
-            raise ParseError(f'The submitted address "{input_address}" was not able to be parsed.')
+        except Exception as e:
+            message = f"Sorry, we failed to parse the submitted address. Check for errors or try a different format."
+            raise ParseError(message)
 
     def parse(self, address):
         # Returns the parsed components of a

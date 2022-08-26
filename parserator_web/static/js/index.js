@@ -19,16 +19,19 @@ async function submitAddress(address) {
       fetch("api/parse?address=" + preparedAddress)
          .then((res) => handleResponse(res));
    } catch (error) {
-      showError();
+      writeError("Something went wrong, please try again.");
    }
 }
 
 async function handleResponse(response) {
    if (response.ok) {
-      var jsonData = await response.json();
-      writeResults(jsonData.address_type, jsonData.address_components);
+      response.json().then(jsonData => {
+         writeResults(jsonData.address_type, jsonData.address_components);
+      });
    } else {
-      showError();
+      response.json().then(jsonData => {
+         writeError(jsonData.detail);
+      });
    }
 }
 
@@ -47,6 +50,15 @@ function writeResults(addressType, addressComponents) {
 
    showResults();
 }
+
+function writeError(message) {
+   // Write Error Message text
+   $("#error-message").text(message);
+
+   showError();
+}
+
+
 
 function showResults() {
    showOrHideById("error", false)
