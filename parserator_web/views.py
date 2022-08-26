@@ -15,10 +15,7 @@ class AddressParse(APIView):
     renderer_classes = [JSONRenderer]
 
     def get(self, request):
-        # TODO: Flesh out this method to parse an address string using the
-        # parse() method and return the parsed components to the frontend.
-        input_string = request.GET["address"]
-
+        input_string = request.query_params['address']
         try:
          address_components, address_type = self.parse(input_string)
          return Response({'input_string':input_string, 'address_components':address_components, 'address_type':address_type})
@@ -28,6 +25,5 @@ class AddressParse(APIView):
             return Response({'error': "Sorry, we couldn't parse this address. Please check your address and try again!"})
 
     def parse(self, address):
-       # Use usaddress parse method to get components and type
         address_components, address_type =  usaddress.tag(address)
         return address_components, address_type
