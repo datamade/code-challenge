@@ -20,20 +20,14 @@ class AddressParse(APIView):
         input_string = request.GET["address"]
 
         try:
-            # need to return: 
-             # input_string: The string that the user sent
-             # address_components: A dictionary of parsed components that comprise the address, in the format {address_part: tag} (returned by AddressParse.parse())
-             # address_type: A string representing type of the parsed address (returned by AddressParse.parse())
          address_components, address_type = self.parse(input_string)
          return Response({'input_string':input_string, 'address_components':address_components, 'address_type':address_type})
 
-        except usaddress.RepeatedLabelError:
-            #not sure how to implement ParseError, maybe add Response? 
-            return ParseError
-
+        except usaddress.RepeatedLabelError as e:
+            print('error', e)
+            return Response({'error': "Sorry, we couldn't parse this address. Please check your address and try again!"})
 
     def parse(self, address):
        # Use usaddress parse method to get components and type
         address_components, address_type =  usaddress.tag(address)
-
         return address_components, address_type
