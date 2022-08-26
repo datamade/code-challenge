@@ -12,7 +12,12 @@ function getAddress() {
 }
 
 function submitAddress() {
+   var address = getAddress();
    var url = "api/parse?address=" + getAddress();
+   if (address === "") {
+      writeError("Please enter an address.");
+      return;
+   }
    try {
       fetch(url)
          .then((res) => handleResponse(res));
