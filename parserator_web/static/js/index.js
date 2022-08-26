@@ -10,33 +10,34 @@ $('.form').on('submit', function (event) {
 });
 
 function getAddress() {
-   var address = $("#address").val().trim();
-   console.log(`Submitted form with: ${address}`);
-   return address;
+   return $("#address").val().trim();
 }
 
 async function submitAddress(address) {
+   var preparedAddress = address.replaceAll(" ", "+");
    try {
-      // TODO submit results to API properly
-      var preparedAddress = address.replaceAll(" ", "+");
-      var response = await fetch("api/parse?address=" + preparedAddress);
-      if (response.ok) {
-         var parseResponse = response.json();
-         writeResults(parseResponse);
-      } else {
-         showError();
-      }
+      fetch("api/parse?address=" + preparedAddress)
+         .then((res) => handleResponse(res));
    } catch (error) {
       showError();
    }
 }
 
-function writeResults(parseResponse) {
+async function handleResponse(response) {
+   if (response.ok) {
+      var jsonData = await response.json();
+      writeResults(jsonData.address_type, jsonData.address_components);
+   } else {
+      showError();
+   }
+}
+
+function writeResults(addressType, addressComponents) {
    // Write Address Type text
-   $("#parse-type").text(parseResponse.address_type);
+   $("#parse-type").text(addressType);
 
    // TODO Write Address Components table
-   console.log(parseResponse.address_components)
+   console.log(addressComponents);
 
    showResults();
 }
