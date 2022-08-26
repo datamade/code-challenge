@@ -11,7 +11,7 @@ function getAddress() {
    return address.trim().replaceAll(" ", "+");
 }
 
-async function submitAddress() {
+function submitAddress() {
    var url = "api/parse?address=" + getAddress();
    try {
       fetch(url)
@@ -21,7 +21,7 @@ async function submitAddress() {
    }
 }
 
-async function handleResponse(response) {
+function handleResponse(response) {
    if (response.ok) {
       response.json().then(jsonData => {
          writeResults(jsonData.address_type, jsonData.address_components);
@@ -54,10 +54,6 @@ function writeError(message) {
    showError();
 }
 
-function writeTextById(id, text) {
-   $(`#${id}`).text(text);
-}
-
 function showResults() {
    hide("error")
    show("address-results")
@@ -79,4 +75,9 @@ function hide(id) {
 function showOrHideById(id, show) {
    var setting = show ? '' : 'none';
    $(`#${id}`).css("display", setting);
+}
+
+
+function writeTextById(id, text) {
+   $(`#${id}`).text(text);
 }
