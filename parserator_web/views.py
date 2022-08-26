@@ -16,6 +16,7 @@ class AddressParse(APIView):
     def get(self, request):
         # TODO: Flesh out this method to parse an address string using the
         # parse() method and return the parsed components to the frontend.
+        
         return Response({})
 
     def parse(self, address):
