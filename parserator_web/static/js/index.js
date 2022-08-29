@@ -36,7 +36,7 @@ $(document).ready(function () {
       {
         //Would like to review this at some point to do some type 
         //of pretty print for error text
-        errorText = JSON.parse(error.responseText)['error']
+        var errorText = JSON.parse(error.responseText)['error']
         //Hopefully no addresses use html tags, but I think this should be good
         //for the time being to do a basic pretty print
         errorText = errorText.replace(/(?:\r\n|\r|\n)/g, '<br>')
