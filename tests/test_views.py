@@ -1,15 +1,21 @@
 import pytest
+from parserator_web.views import AddressParse
 
 
 def test_api_parse_succeeds(client):
-    # TODO: Finish this test. Send a request to the API and confirm that the
-    # data comes back in the appropriate format.
     address_string = '123 main st chicago il'
-    pytest.fail()
+    result = AddressParse.parse(client,address=address_string)
+
+    #if the result is not as expected, fail this test and return the actual result.
+    if result !=  ([('123', 'AddressNumber'), ('main', 'StreetName'), ('st', 'StreetNamePostType'), ('chicago', 'PlaceName'), ('il', 'StateName')], 'Street Address'):
+        pytest.fail("Incorrect format. Instead got {0}".format(result))
 
 
 def test_api_parse_raises_error(client):
-    # TODO: Finish this test. The address_string below will raise a
-    # RepeatedLabelError, so ParseAddress.parse() will not be able to parse it.
+    #Try to parse the address string, break if there is an exeception (which should happen). If there isn't an exeception, fail this test.
     address_string = '123 main st chicago il 123 main st'
-    pytest.fail()
+    try:
+        AddressParse.parse(client, address=address_string)
+    except Exception as e:
+        return
+    pytest.fail("Missed exeception!")
