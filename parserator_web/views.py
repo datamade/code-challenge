@@ -25,20 +25,23 @@ class AddressParse(APIView):
                 'input_string': raw_address,
                 'address_components': address_components,
                 'address_type': address_type,
-            } 
+            }
         elif isinstance(parsed_address, ParseError):
             status_code = 400
             response = {
                 'status': 'error',
                 'error': parsed_address.detail,
             }
-            
+
         return Response(data=response, status=status_code)
 
     def parse(self, address):
-        '''Takes an address (string) and uses usaddress module to get a parsed address (dict) and address type (string)'''
+        '''
+        Takes an address (string) and uses usaddress module to get a
+        parsed address (dict) and address type (string)
+        '''
         try:
             # tuple(<parsed address>, <type of address>)
             return usaddress.tag(address)
-        except: 
+        except Exception:
             return ParseError(f"Error: {address} is not a valid address")
