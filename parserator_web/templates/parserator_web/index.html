@@ -18,6 +18,7 @@
         </form>
       </div>
       <!-- TODO: Display parsed address components here. -->
+      <p id="parsing-error"><!-- error message goes here --></p>
       <div id="address-results" style="display:none">
         <h4>Parsing results</h4>
         <p>Address type: <strong><span id="parse-type"></span></strong></p>
@@ -55,14 +56,67 @@
         // Send GET request and convert response to json format
         let response = await fetch("/api/parse?" + queryParams)
         response = await response.json()
-        
+        if (response.status === 'error') {
+          throw new Error(response.error)
+        } else {
+          if (resultsRef.style.display === 'none') {
+            resultsRef.style.display = 'block'
+          }
+          if (errorTextRef.style.display === "inline") {
+            errorTextRef.style.display = "none"
+          }
+          // input value is no longer needed.  Calling reset() on the form clears it's value
+          e.target.reset();
+        }
+
+        renderData(response);
       } catch (error) {
-        console.error("SUMBIT ERROR:", error)
+         // Do not reset if there's an error.  The user may have made a minor typo.  Don't make them re-enter the entire address
+        // hide the results table
+        resultsRef.style.display = 'none'
+        // show the error message with the text provided in error.message
+        errorTextRef.style.display = 'inline';
+        errorTextRef.innerText = error.message
+      }
+    }
+
+    const renderData = ({ address_components, address_type, input_string }) => {
+      if (tbodyRef.rows.length) {
+        // If there are any rows in tbody, create a new tbody element (same id) and replace the old tbody with it
+        const newTableBody = document.createElement("tbody")
+        // It's probably safe to hardcode the id as "address-results", but just in case, use the id from the old tbody
+        newTableBody.id = tbodyRef.id;
+        tableRef.replaceChild(newTableBody, tbodyRef)
+        // assign tbodyRef to newTableBody, so the code below this 'if' block uses the correct <tbody> node
+        tbodyRef = newTableBody;
+      }
+
+      const addressTypeRef = document.querySelector("#parse-type")
+      addressTypeRef.textContent = address_type
+
+      // for each component of address_components, insert a new <tr> to show the component's tag and value
+      for (let key in address_components) {
+        // make new <tr> element and insert 2 empty <td> elements into it
+        const tr = tbodyRef.insertRow();
+        const keyTD = tr.insertCell();
+        const valueTD = tr.insertCell();
+
+        // create & add (aka append) the text that corresponds to the <td>
+        const keyText = document.createTextNode(address_components[key]);
+        const valueText = document.createTextNode(key);
+        keyTD.appendChild(keyText);
+        valueTD.appendChild(valueText);
       }
     }
 
     // get form element, and add 'submit' listener and handler function for submit event 
     const formRef = document.getElementById("address-form")
     formRef.addEventListener('submit', handleSubmit);
+
+    // other elements we need refs for.  tbodyRef can change, but tableRef cannot
+    let tbodyRef = document.querySelector('#address-results tbody')
+    const tableRef = document.querySelector("table")
+    const resultsRef = document.querySelector("#address-results")
+    const errorTextRef = document.querySelector("#parsing-error")
   </script>
 {% endblock %}
