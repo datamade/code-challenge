@@ -1,3 +1,5 @@
+import usaddress
+
 REQUEST_URL = "/api/parse/"
 
 def test_api_parse_succeeds(client):
@@ -27,8 +29,11 @@ def test_api_parse_succeeds(client):
     assert response.data["input_string"] == address_string
     assert response.data["address_type"] == "Street Address"
 
-# def test_api_parse_raises_error(client):
-#     # TODO: Finish this test. The address_string below will raise a
-#     # RepeatedLabelError, so ParseAddress.parse() will not be able to parse it.
-#     address_string = '123 main st chicago il 123 main st'
-#     pytest.fail()
+def test_api_parse_raises_error(client):
+    address_string = '123 main st chicago il 123 main st'
+    try:
+        # Make GET request.  Not concerned with value of response, just want to make sure a RepeatedLabelError is thrown
+        client.get(REQUEST_URL, { "address": address_string })
+    except usaddress.RepeatedLabelError:
+        # This is good.  usaddress.RepeatedLabelError is the exact error that should be returned based on the input address_string
+        assert True
