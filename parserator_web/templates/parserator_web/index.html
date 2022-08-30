@@ -11,7 +11,7 @@
       <p>Dealing with some messy or unstructured addresses? We can parse them for you.</p>
       <div class="card card-body bg-light">
         <p><strong>Try it out!</strong> Parse an address in the United States into fields like <code>AddressNumber</code>, <code>StreetName</code> and <code>ZipCode</code>.</p>
-        <form class="form" role="form">
+        <form class="form" role="form" id="address-form">
           {% csrf_token %}
           <input name="address" type="text" class="form-control" id="address" placeholder="123 Main St. Suite 100 Chicago, IL">
           <button id="submit" type="submit" class="btn btn-success mt-3">Parse!</button>
@@ -38,5 +38,31 @@
 {% endblock %}
 
 {% block extra_js %}
-  <script src="{% static 'js/index.js' %}"></script>
+  <!-- <script src="{% static 'js/index.js' %}"> -->
+  <script type="text/javascript">
+
+    const handleSubmit = async (e) => {
+      e.preventDefault();
+      
+      // save form data as FormData object, then get the input address that usaddress will parse on the backend
+      const formData = new FormData(e.target);
+      const address = formData.get("address");
+
+      // URLSearchParams isn't supported by IE, but polyfills are available if that is important
+      const queryParams = new URLSearchParams({ address })
+
+      try {
+        // Send GET request and convert response to json format
+        let response = await fetch("/api/parse?" + queryParams)
+        response = await response.json()
+        
+      } catch (error) {
+        console.error("SUMBIT ERROR:", error)
+      }
+    }
+
+    // get form element, and add 'submit' listener and handler function for submit event 
+    const formRef = document.getElementById("address-form")
+    formRef.addEventListener('submit', handleSubmit);
+  </script>
 {% endblock %}
