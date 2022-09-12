@@ -29,7 +29,6 @@ $(document).ready(function () {
           tableData += '</tr>'
         })
         addrResults.children('table').children('tbody').html(tableData)
-        //$('#address-table').children('tbody').html(tableData);
         addrResults.show()
       },
       error: function (error)
