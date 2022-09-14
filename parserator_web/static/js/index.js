@@ -3,12 +3,14 @@
 $(document).ready(function () {
   var addrResults = $('#address-results')
   var errorResults = $('#error-results')
-  addrResults.hide()
-  errorResults.hide()
-
   var frm = $("#address-form")
+
   frm.submit(function (e) {
     e.preventDefault()
+    
+    addrResults.hide()
+    errorResults.hide()
+
     var urlAddr =frm.attr('action')
     $.ajax({
       url: urlAddr,
@@ -33,13 +35,15 @@ $(document).ready(function () {
       },
       error: function (error)
       {
-        //Would like to review this at some point to do some type 
-        //of pretty print for error text
-        var errorText = JSON.parse(error.responseText)['error']
+        var errorFull = JSON.parse(error.responseText)['error']
+        var errorType = JSON.parse(error.responseText)['error_type']
+
+        var errorMessage = "ERROR: The address was not able to be parsed due to a "+errorType+". Please try again with a different input!"
         //Hopefully no addresses use html tags, but I think this should be good
-        //for the time being to do a basic pretty print
-        errorText = errorText.replace(/(?:\r\n|\r|\n)/g, '<br>')
-        $('#error-type').html(errorText)
+        //for the time being for the full error message.
+        errorFull = errorFull.replace(/(?:\r\n|\r|\n)/g, '<br>')
+        $('#error-type').html(errorMessage)
+        $('#error-full').html(errorFull)
         errorResults.show()
       },
     })

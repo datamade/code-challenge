@@ -20,9 +20,14 @@ class AddressParse(APIView):
         try:
             address_components, address_type = self.parse(input_string)
         except usaddress.RepeatedLabelError as e:
-            return Response(status=status.HTTP_400_BAD_REQUEST, data={'error': e.message})
+            return Response(status=status.HTTP_400_BAD_REQUEST,
+                            data={'error': e.message,
+                                  'error_type': "Repeated Label",
+                                  'original_string': e.original_string,
+                                  'parsed_string': e.parsed_string})
         except Exception as e:
-            return Response(status=status.HTTP_400_BAD_REQUEST, data={'error': e.message})
+            return Response(status=status.HTTP_400_BAD_REQUEST,
+                            data={'error_type': e.__class__})
         return Response({'input_string': input_string,
                          'address_components': address_components,
                          'address_type': address_type})

@@ -17,11 +17,29 @@
           <button id="submit" type="submit" class="btn btn-success mt-3">Parse!</button>
         </form>
       </div>
-      <!-- TODO: Display parsed address components here. -->
+
       <div id="error-results" style="display:none">
-        <h4>Parsing results</h4>
-        <p> Error: <strong><div id="error-type"></div></strong></p>
+        <br>
+        <div id="error-type" class="alert alert-warning" role="alert"></div>
+        
+        <div id="accordion">
+          <div class="card">
+            <div class="card-header" id=""headingOne">
+              <h4 class="mb-0">
+                <button class="btn btn-link" data-toggle="collapse" data-target="#error-collapse">
+                  Full Error Report
+                </button>
+              </h4>
+            </div>
+            <div class="collapse" id="error-collapse">
+                <strong>
+                  <div class="card-body" id="error-full"></div>
+                </strong>
+            </div>
+          </div>
+        </div>
       </div>
+
       <div id="address-results" style="display:none">
         <h4>Parsing results</h4>
         <p>Address type: <strong><span id="parse-type"></span></strong></p>
