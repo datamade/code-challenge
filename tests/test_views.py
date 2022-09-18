@@ -45,9 +45,11 @@ def test_api_parse_raises_error(client):
 
     address_string = '123 main st chicago il 123 main st'
     try:
-         response = visit_site(client, address_string)
-    except usaddress.RepeatedLabelError:
-        assert True
+        response = visit_site(client, address_string)
+    except Exception as e:
+        print(e)
+        return e
+        
 
 
     

@@ -84,7 +84,16 @@
           }
 
         }) 
-        .catch(err => console.log(err))
+        .catch(err => {
+
+          document.querySelector("#address-results").style.display = '';
+          let fullError =  `Please try another address: ${err}!`;
+          let tableHead = document.querySelector("thead");
+          tableHead.innerHTML = '';
+          let hiParagraph = document.querySelector('#hi');
+          hiParagraph.innerHTML = fullError;
+
+        })
        
     };
 
