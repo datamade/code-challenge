@@ -20,7 +20,8 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = os.environ['DJANGO_SECRET_KEY']
 
 # Set the DJANGO_DEBUG environment variable to False to disable debug mode
-DEBUG = False if os.getenv('DJANGO_DEBUG', True) == 'False' else True
+# DEBUG = False if os.getenv('DJANGO_DEBUG', True) == 'False' else True
+DEBUG = True
 
 # Define DJANGO_ALLOWED_HOSTS as a comma-separated list of valid hosts,
 # e.g. localhost,127.0.0.1,.herokuapp.com

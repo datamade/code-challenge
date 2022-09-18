@@ -4,6 +4,7 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework.renderers import JSONRenderer
 from rest_framework.exceptions import ParseError
+from rest_framework.decorators import api_view
 
 
 class Home(TemplateView):
@@ -13,12 +14,26 @@ class Home(TemplateView):
 class AddressParse(APIView):
     renderer_classes = [JSONRenderer]
 
-    def get(self, request):
-        # TODO: Flesh out this method to parse an address string using the
-        # parse() method and return the parsed components to the frontend.
-        return Response({})
+    def post(self, request):
+
+        input_string = request.data['address']
+        try:
+            address_components, address_type = self.parse(request.data['address'])
+            return_data = {
+                'input_string': input_string,
+                'address_components': address_components,
+                'address_type': address_type
+            }
+            return Response({'return_data': return_data})
+            
+        except ParseError:
+            return ParseError
+
 
     def parse(self, address):
-        # TODO: Implement this method to return the parsed components of a
-        # given address using usaddress: https://github.com/datamade/usaddress
+
+        address_components = usaddress.parse(address)
+        address_tagged = usaddress.tag(address)
+        address_type = address_tagged[-1]
+        
         return address_components, address_type
