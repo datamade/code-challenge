@@ -1,0 +1,37 @@
+<!-- parserator_web/templates/parserator_web/index.html -->
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Parserator</title>
+  </head>
+  <body>
+    <form id="address-form">
+      <input type="text" id="address-input" name="address" placeholder="Enter address here" />
+      <button type="submit">Parse Address</button>
+    </form>
+    <div id="address-results" style="display: none"></div>
+
+    <script>
+      document.getElementById("address-form").addEventListener("submit", function (event) {
+        event.preventDefault();
+        const address = document.getElementById("address-input").value;
+
+        fetch(`/parse?address=${encodeURIComponent(address)}`)
+          .then((response) => response.json())
+          .then((data) => {
+            const resultsDiv = document.getElementById("address-results");
+            if (data.error) {
+              resultsDiv.textContent = data.error;
+            } else {
+              resultsDiv.textContent = JSON.stringify(data, null, 2);
+            }
+            resultsDiv.style.display = "block";
+          })
+          .catch((error) => {
+            console.error("Error:", error);
+          });
+      });
+    </script>
+  </body>
+</html>

@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "description": "JavaScript development setup for the DataMade Code Challenge",
   "devDependencies": {
-    "eslint": "^7.23.0"
+    "babel-eslint": "^10.1.0",
+    "eslint": "^7.32.0"
   }
 }

@@ -8,7 +8,7 @@ FROM python:3.8
 
 # Add the NodeSource PPA
 # (see: https://github.com/nodesource/distributions/blob/master/README.md)
-RUN curl -sL https://deb.nodesource.com/setup_12.x | bash -
+RUN curl -sL https://deb.nodesource.com/setup_18.x | bash -
 
 # Install any additional OS-level packages you need via apt-get. RUN statements
 # add additional layers to your image, increasing its final size. Keep your
@@ -41,6 +41,12 @@ RUN npm install
 # Copy the contents of the current host directory (i.e., our app code) into
 # the container.
 COPY . /app
+COPY ./docker-entrypoint.sh /app/docker-entrypoint.sh
+
+RUN ls -la /app/docker-entrypoint.sh
+RUN chmod +x /app/docker-entrypoint.sh
+RUN ls -la /app/docker-entrypoint.sh
+
 
 # Add a bogus env var for the Django secret key in order to allow us to run
 # the 'collectstatic' management command
@@ -48,3 +54,5 @@ ENV DJANGO_SECRET_KEY 'foobar'
 
 # Build static files into the container
 RUN python manage.py collectstatic --noinput
+
+CMD ["/app/docker-entrypoint.sh"]

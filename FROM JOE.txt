@@ -1,0 +1,9 @@
+Hello!
+
+I just wanted to give you a heads up that Django is not my primary coding framework, so my knowledge here is admittedly limited. I am extremely familiar with React and with Python, though my Python knowledge is best put to the test in Leetcode, because their array methods are so much faster and more thorough!!! :lololol:
+
+That said, I'm an avid learner and I love being put to the test. Should I be given the opportunity to prove myself further, I will know the ins and outs of Django by the time I begin working with you in the fall. 
+
+Thank you so much for the opportunity.
+
+Joe
