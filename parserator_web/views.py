@@ -13,12 +13,25 @@ class Home(TemplateView):
 class AddressParse(APIView):
     renderer_classes = [JSONRenderer]
 
+# Gets address string from query params, parses it, and returns response
     def get(self, request):
-        # TODO: Flesh out this method to parse an address string using the
-        # parse() method and return the parsed components to the frontend.
-        return Response({})
+        input_string = request.query_params.get('address', None)
+        if not input_string:
+            raise ParseError('No address provided')
 
+        try:
+            response = self.parse(input_string)
+        except Exception as e:
+            raise ParseError(e)
+
+        response_data = {
+            'input_string': input_string,
+            'address_components': response[0],
+            'address_type': response[1]
+        }
+        return Response(response_data)
+
+# Parses address string, returns ordered dict of address components and address type
     def parse(self, address):
-        # TODO: Implement this method to return the parsed components of a
-        # given address using usaddress: https://github.com/datamade/usaddress
+        address_components, address_type = usaddress.tag(address)
         return address_components, address_type
