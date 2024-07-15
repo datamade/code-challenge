@@ -1,1 +1,21 @@
 /* Add custom style overrides here. */
+#error-container {
+    background-color: #e34d3f;
+    width: 100%;
+    padding: 7px 13px;
+    margin-top: 10px;
+    border-radius: 5px;
+    gap: 5px;
+}
+
+#close-button, #error-message {
+    font-family: inherit;
+    font-size: inherit;
+    color: white;
+    background-color: #e34d3f;
+    border: none;
+}
+
+#error-message {
+    margin-top: 13px;
+}

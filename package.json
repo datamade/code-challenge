@@ -4,5 +4,9 @@
   "description": "JavaScript development setup for the DataMade Code Challenge",
   "devDependencies": {
     "eslint": "^7.23.0"
+  },
+  "dependencies": {
+    "docker": "^1.0.0",
+    "docker-compose": "^0.24.8"
   }
 }

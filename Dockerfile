@@ -34,6 +34,9 @@ WORKDIR /app
 COPY ./requirements.txt /app/requirements.txt
 RUN pip install --no-cache-dir -r requirements.txt
 
+# Install npm
+RUN apt-get update && apt-get install -y npm
+
 # Install Node requirements
 COPY ./package.json /app/package.json
 RUN npm install

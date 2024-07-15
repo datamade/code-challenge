@@ -19,6 +19,14 @@ this assessment.
 
 To get started, fork this repo and follow the instructions below.
 
+## Completed By
+
+Hi, my name is [Dan Grossberg](https://github.com/dwgrossberg), and I'm grateful that you're taking the time to review
+my application code challenge. Changes have been committed throughout the dev process
+and there are numerous comments explaining my thought process where applicable.
+Please feel free to reach out with any questions or comments and I will be happy to 
+answer!
+
 ## Installation
 
 Development requires a local installation of [Docker](https://docs.docker.com/install/)
