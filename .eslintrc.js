@@ -11,5 +11,11 @@ module.exports = {
     "space-in-parens": ["error", "never"],
     "space-before-function-paren": ["error", "always"],
     "space-before-blocks": ["error", "always"]
+  },
+  "parserOptions": {
+    "ecmaVersion": "latest"
+  },
+  "env": {
+    "es6": true
   }
 }
