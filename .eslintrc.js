@@ -1,4 +1,9 @@
+'use strict'
 module.exports = {
+  parserOptions: {
+    ecmaVersion: 2018,
+    sourceType: 'module',
+  },
   globals: {
     __PATH_PREFIX__: true,
   },
