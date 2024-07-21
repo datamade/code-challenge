@@ -6,24 +6,29 @@
 # https://pythonspeed.com/articles/base-image-python-docker-images/
 FROM python:3.8
 
+# Set the working directory in the container
+WORKDIR /app
+
 # Add the NodeSource PPA
 # (see: https://github.com/nodesource/distributions/blob/master/README.md)
-RUN curl -sL https://deb.nodesource.com/setup_12.x | bash -
+RUN curl -sL https://deb.nodesource.com/setup_14.x | bash -
 
 # Install any additional OS-level packages you need via apt-get. RUN statements
 # add additional layers to your image, increasing its final size. Keep your
 # image small by combining related commands into one RUN statement, e.g.,
 #
-# RUN apt-get update && \
-#     apt-get install -y python-pip
+RUN apt-get update && \
+    apt-get install -y --no-install-recommends postgresql-client nodejs && \
+    apt-get install -y npm && \
+    rm -rf /var/lib/apt/lists/*
 #
 # Read more on Dockerfile best practices at the source:
 # https://docs.docker.com/develop/develop-images/dockerfile_best-practices
-RUN apt-get update && apt-get install -y --no-install-recommends postgresql-client nodejs
+# RUN apt-get update && apt-get install -y --no-install-recommends postgresql-client nodejs
 
 # Inside the container, create an app directory and switch into it
-RUN mkdir /app
-WORKDIR /app
+# RUN mkdir /app
+# WORKDIR /app
 
 # Copy the requirements file into the app directory, and install them. Copy
 # only the requirements file, so Docker can cache this build step. Otherwise,
@@ -32,7 +37,7 @@ WORKDIR /app
 # for building lean and efficient containers:
 # https://blog.realkinetic.com/building-minimal-docker-containers-for-python-applications-37d0272c52f3
 COPY ./requirements.txt /app/requirements.txt
-RUN pip install --no-cache-dir -r requirements.txt
+RUN pip3 install --no-cache-dir -r requirements.txt
 
 # Install Node requirements
 COPY ./package.json /app/package.json
@@ -47,4 +52,10 @@ COPY . /app
 ENV DJANGO_SECRET_KEY 'foobar'
 
 # Build static files into the container
-RUN python manage.py collectstatic --noinput
+RUN python3 manage.py collectstatic --noinput
+
+# Make port 8000 available to the world outside this container
+EXPOSE 8000
+
+# Run the application
+CMD ["python3", "manage.py", "runserver", "0.0.0.0:8000"]

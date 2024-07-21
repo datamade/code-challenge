@@ -17,7 +17,7 @@
           <button id="submit" type="submit" class="btn btn-success mt-3">Parse!</button>
         </form>
       </div>
-      <!-- TODO: Display parsed address components here. -->
+      <!-- Display parsed address components here -->
       <div id="address-results" style="display:none">
         <h4>Parsing results</h4>
         <p>Address type: <strong><span id="parse-type"></span></strong></p>
@@ -28,7 +28,7 @@
               <th>Tag</th>
             </tr>
           </thead>
-          <tbody>
+          <tbody id="parse-results-body">
           </tbody>
         </table>
       </div>
@@ -38,5 +38,64 @@
 {% endblock %}
 
 {% block extra_js %}
-  <script src="{% static 'js/index.js' %}"></script>
+  <script>
+  document.getElementById('address-form').addEventListener('submit', function(event) {
+      // prevent the default for submission -- avoid page refresh
+      event.preventDefault();
+
+      // get the address input value
+      const address = document.getElementById('address-input').value;
+
+      // use fetch API to send a request to the API endpoint with address as a parameter -- encodeURIComponent for proper url encoding
+      fetch(`/api/address-parse/?address=${encodeURIComponent(address)}`)
+          // use response from fetch to parse into json
+          .then(response => response.json())
+          .then(data => {
+              // get resulting elements in HTML
+              const resultDiv = document.getElementById('address-results');
+              const parseType = document.getElementById('parse-type');
+              const parseResultsBody = document.getElementById('parse-results-body');
+
+              if(data.error){
+                  // if error display error message
+                  resultDiv.innerHTML = `<p>Error: ${data.error}</p>`;
+              }else {
+                  // if parse successful update the address
+                  parseType.innerText = data.address_type;
+
+                  //clear previous results
+                  parseResultsBody.innerHTML = '';
+
+                  //loop through parsed address and create table rows
+                  for (const [part,tag] of Object.entries(data.address_components)) {
+                      // create new table row
+                      const row = document.createElement('tr');
+                      // create new cell for the part of address
+                      const partCell = document.createElement('td');
+                      // set text of cell to address part
+                      partCell.innerText = part;
+                      // create new cell for tag
+                      const tagCell = document.createElement('td');
+                      // set the text of cell to tag
+                      tagCell.innerText = tag;
+                      // add address part cell to row
+                      row.appendChild(partCell);
+                      // add the tag cell to row
+                      row.appendChild(tagCell);
+                      // add the row to to table body
+                      parseResultsBody.appendChild(row);
+                  }
+
+                  // display results div
+                  resultDiv.style.display = 'block';
+              }
+          })
+          .catch(error => {
+              // error handling for fetch request
+              const resultDiv = document.getElementById('address-results');
+              resultDiv.innerHTML = `<p>Error: ${error}</p>`;
+              resultDiv.style.display = 'block';
+          });
+  });
+  </script>
 {% endblock %}

@@ -109,3 +109,4 @@ applications.
 To submit your work, create a feature branch for your code, commit your changes,
 push your commits up to your fork, and open up a pull request against `master`.
 Finally, drop a link to your pull request in your application.
+*Note: I do not have authorization to create a feature branch from the code-challenge-master repository so I created a fork instead shown by other examples of applicants*
