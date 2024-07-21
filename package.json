@@ -1,8 +1,8 @@
 {
-  "name": "code-challenge",
-  "version": "1.0.0",
-  "description": "JavaScript development setup for the DataMade Code Challenge",
-  "devDependencies": {
-    "eslint": "^7.23.0"
-  }
+	"name": "code-challenge",
+	"version": "1.0.0",
+	"description": "JavaScript development setup for the DataMade Code Challenge",
+	"devDependencies": {
+		"eslint": "^7.23.0"
+	}
 }
