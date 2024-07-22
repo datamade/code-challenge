@@ -36,7 +36,12 @@ RUN pip install --no-cache-dir -r requirements.txt
 
 # Install Node requirements
 COPY ./package.json /app/package.json
-RUN npm install
+
+#this process errored out
+#RUN npm install
+
+# i used this one instead
+RUN apt-get install npm -y
 
 # Copy the contents of the current host directory (i.e., our app code) into
 # the container.
