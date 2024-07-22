@@ -2,4 +2,4 @@ from django.apps import AppConfig
 
 
 class DjangoAppConfig(AppConfig):
-    name = 'parserator_web'
+    name = "parserator_web"

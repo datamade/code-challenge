@@ -11,7 +11,7 @@
       <p>Dealing with some messy or unstructured addresses? We can parse them for you.</p>
       <div class="card card-body bg-light">
         <p><strong>Try it out!</strong> Parse an address in the United States into fields like <code>AddressNumber</code>, <code>StreetName</code> and <code>ZipCode</code>.</p>
-        <form class="form" role="form">
+        <form class="address-form" role="form">
           {% csrf_token %}
           <input name="address" type="text" class="form-control" id="address" placeholder="123 Main St. Suite 100 Chicago, IL">
           <button id="submit" type="submit" class="btn btn-success mt-3">Parse!</button>
@@ -21,7 +21,7 @@
       <div id="address-results" style="display:none">
         <h4>Parsing results</h4>
         <p>Address type: <strong><span id="parse-type"></span></strong></p>
-        <table class="table table-bordered">
+        <table id="table-address-results" class="table table-bordered">
           <thead>
             <tr>
               <th>Address part</th>
@@ -31,6 +31,9 @@
           <tbody>
           </tbody>
         </table>
+      </div>
+      <div id="address-error-container", style="display:none" >
+        <p id="address-error"></p>
       </div>
     </div>
   </div>
