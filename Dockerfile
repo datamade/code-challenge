@@ -36,7 +36,7 @@ RUN pip install --no-cache-dir -r requirements.txt
 
 # Install Node requirements
 COPY ./package.json /app/package.json
-RUN npm install
+# RUN npm install
 
 # Copy the contents of the current host directory (i.e., our app code) into
 # the container.
