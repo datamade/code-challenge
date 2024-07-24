@@ -1,15 +1,27 @@
 import pytest
+from django.urls import reverse
+from rest_framework.test import APIClient
 
 
-def test_api_parse_succeeds(client):
-    # TODO: Finish this test. Send a request to the API and confirm that the
-    # data comes back in the appropriate format.
-    address_string = '123 main st chicago il'
-    pytest.fail()
+@pytest.mark.django_db
+def test_parse_address_success():
+    client = APIClient()
+    response = client.post(
+        reverse("address-parse"),
+        {"address": "123 Main St. Suite 100 Chicago, IL"},
+        format="json",
+    )
+    assert response.status_code == 200
+    assert response.data["status"] == "success"
+    assert "AddressNumber" in response.data["parsed"]
 
 
-def test_api_parse_raises_error(client):
-    # TODO: Finish this test. The address_string below will raise a
-    # RepeatedLabelError, so ParseAddress.parse() will not be able to parse it.
-    address_string = '123 main st chicago il 123 main st'
-    pytest.fail()
+@pytest.mark.django_db
+def test_parse_address_failure():
+    client = APIClient()
+    response = client.post(
+        reverse("address-parse"), {"address": "123 main st chicago il 123 main st"},
+        format="json"
+    )
+    assert response.status_code == 400
+    assert response.data["status"] == "error"

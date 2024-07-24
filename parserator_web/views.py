@@ -1,24 +1,38 @@
 import usaddress
 from django.views.generic import TemplateView
+from rest_framework import status
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework.renderers import JSONRenderer
-from rest_framework.exceptions import ParseError
 
 
 class Home(TemplateView):
-    template_name = 'parserator_web/index.html'
+    template_name = "parserator_web/index.html"
 
 
 class AddressParse(APIView):
     renderer_classes = [JSONRenderer]
 
-    def get(self, request):
-        # TODO: Flesh out this method to parse an address string using the
-        # parse() method and return the parsed components to the frontend.
-        return Response({})
+    def post(self, request, *args, **kwargs):
+        address = request.data.get("address")
+        try:
+            parsed_address, address_type = usaddress.tag(address)
+            return Response(
+                {
+                    "status": "success",
+                    "parsed": parsed_address,
+                    "address_type": address_type,
+                },
+                status=status.HTTP_200_OK,
+            )
+        except usaddress.RepeatedLabelError as e:
+            return Response(
+                {"status": "error", "message": str(e)},
+                status=status.HTTP_400_BAD_REQUEST,
+            )
 
-    def parse(self, address):
-        # TODO: Implement this method to return the parsed components of a
-        # given address using usaddress: https://github.com/datamade/usaddress
-        return address_components, address_type
+    def get(self, request, *args, **kwargs):
+        return Response(
+            {"message": "Send a POST request with an address to parse."},
+            status=status.HTTP_200_OK,
+        )

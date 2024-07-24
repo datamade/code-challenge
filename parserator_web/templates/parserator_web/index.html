@@ -11,13 +11,12 @@
       <p>Dealing with some messy or unstructured addresses? We can parse them for you.</p>
       <div class="card card-body bg-light">
         <p><strong>Try it out!</strong> Parse an address in the United States into fields like <code>AddressNumber</code>, <code>StreetName</code> and <code>ZipCode</code>.</p>
-        <form class="form" role="form">
+        <form id="address-form" class="form" role="form">
           {% csrf_token %}
           <input name="address" type="text" class="form-control" id="address" placeholder="123 Main St. Suite 100 Chicago, IL">
           <button id="submit" type="submit" class="btn btn-success mt-3">Parse!</button>
         </form>
       </div>
-      <!-- TODO: Display parsed address components here. -->
       <div id="address-results" style="display:none">
         <h4>Parsing results</h4>
         <p>Address type: <strong><span id="parse-type"></span></strong></p>
@@ -28,7 +27,7 @@
               <th>Tag</th>
             </tr>
           </thead>
-          <tbody>
+          <tbody id="results-body">
           </tbody>
         </table>
       </div>
@@ -38,5 +37,58 @@
 {% endblock %}
 
 {% block extra_js %}
-  <script src="{% static 'js/index.js' %}"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.min.js"></script>
+<script>
+function getCookie(name) {
+  var cookieValue = null;
+  if (document.cookie && document.cookie != '') {
+      var cookies = document.cookie.split(';');
+      for (var i = 0; i < cookies.length; i++) {
+          var cookie = jQuery.trim(cookies[i]);
+          if (cookie.substring(0, name.length + 1) == (name + '=')) {
+              cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+              break;
+          }
+      }
+  }
+  return cookieValue;
+}
+
+document.getElementById('address-form').addEventListener('submit', function(event) {
+    event.preventDefault();
+    let address = document.getElementById('address').value;
+    let csrftoken = getCookie('csrftoken');
+
+    $.ajax({
+        url: 'api/parse/',
+        type: 'POST',
+        headers: {
+            'X-CSRFToken': csrftoken
+        },
+        data: {
+            'address': address
+        },
+        success: function(data) {
+            let resultDiv = document.getElementById('address-results');
+            let resultsBody = document.getElementById('results-body');
+            let parseType = document.getElementById('parse-type');
+            resultsBody.innerHTML = '';
+            if (data.status === 'success') {
+                parseType.innerText = data.address_type;
+                Object.entries(data.parsed).forEach(([key, value]) => {
+                    resultsBody.innerHTML += `<tr><td>${key}</td><td>${value}</td></tr>`;
+                });
+                resultDiv.style.display = 'block';
+            } else {
+                resultDiv.style.display = 'none';
+                alert(`Error: ${data.message}`);
+            }
+        },
+        error: function(jqXHR, textStatus, errorThrown) {
+            alert(`Error: ${textStatus}`);
+        }
+    });
+});
+</script>
 {% endblock %}
