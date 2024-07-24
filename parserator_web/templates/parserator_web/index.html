@@ -11,13 +11,13 @@
       <p>Dealing with some messy or unstructured addresses? We can parse them for you.</p>
       <div class="card card-body bg-light">
         <p><strong>Try it out!</strong> Parse an address in the United States into fields like <code>AddressNumber</code>, <code>StreetName</code> and <code>ZipCode</code>.</p>
-        <form class="form" role="form">
+        <form class="form" role="form" id="address-form">
           {% csrf_token %}
           <input name="address" type="text" class="form-control" id="address" placeholder="123 Main St. Suite 100 Chicago, IL">
           <button id="submit" type="submit" class="btn btn-success mt-3">Parse!</button>
         </form>
       </div>
-      <!-- TODO: Display parsed address components here. -->
+      <!-- Display parsed address components here. -->
       <div id="address-results" style="display:none">
         <h4>Parsing results</h4>
         <p>Address type: <strong><span id="parse-type"></span></strong></p>
@@ -28,7 +28,7 @@
               <th>Tag</th>
             </tr>
           </thead>
-          <tbody>
+          <tbody id="results-body">
           </tbody>
         </table>
       </div>
@@ -38,5 +38,43 @@
 {% endblock %}
 
 {% block extra_js %}
-  <script src="{% static 'js/index.js' %}"></script>
+  <script>
+    document.getElementById('address-form').addEventListener('submit', function(event) {
+      event.preventDefault();
+      
+      var addressInput = document.getElementById('address').value;
+      var csrfToken = document.querySelector('input[name="csrfmiddlewaretoken"]').value;
+
+      fetch(`/api/parse_address?address=${encodeURIComponent(addressInput)}`, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+          'X-CSRFToken': csrfToken
+        }
+      })
+      .then(response => response.json())
+      .then(data => {
+        if (data.error) {
+          alert(data.error);
+        } else {
+          document.getElementById('address-results').style.display = 'block';
+          document.getElementById('parse-type').innerText = data.address_type;
+          
+          var resultsBody = document.getElementById('results-body');
+          resultsBody.innerHTML = '';
+          for (var part in data.address_components) {
+            var row = `<tr>
+                         <td>${part}</td>
+                         <td>${data.address_components[part]}</td>
+                       </tr>`;
+            resultsBody.insertAdjacentHTML('beforeend', row);
+          }
+        }
+      })
+      .catch(error => {
+        console.error('Error:', error);
+        alert('An error occurred while parsing the address.');
+      });
+    });
+  </script>
 {% endblock %}
