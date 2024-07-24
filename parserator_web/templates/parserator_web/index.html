@@ -10,12 +10,19 @@
       <h3 id="usaddress-parser"><i class="fa fa-fw fa-map-marker-alt"></i> U.S. address parser</h3>
       <p>Dealing with some messy or unstructured addresses? We can parse them for you.</p>
       <div class="card card-body bg-light">
-        <p><strong>Try it out!</strong> Parse an address in the United States into fields like <code>AddressNumber</code>, <code>StreetName</code> and <code>ZipCode</code>.</p>
+        <p><strong>Try it out!</strong> Parse an address in the United States into fields like
+          <code>AddressNumber</code>, <code>StreetName</code> and <code>ZipCode</code>.
+        </p>
         <form class="form" role="form">
           {% csrf_token %}
-          <input name="address" type="text" class="form-control" id="address" placeholder="123 Main St. Suite 100 Chicago, IL">
+          <input name="address" type="text" class="form-control" id="address"
+            placeholder="123 Main St. Suite 100 Chicago, IL">
           <button id="submit" type="submit" class="btn btn-success mt-3">Parse!</button>
         </form>
+      </div>
+      <!-- Error Handling -->
+      <div id="errors" class="alert alert-danger" style="display: none;">
+
       </div>
       <!-- TODO: Display parsed address components here. -->
       <div id="address-results" style="display:none">
@@ -28,7 +35,7 @@
               <th>Tag</th>
             </tr>
           </thead>
-          <tbody>
+          <tbody id="table_body">
           </tbody>
         </table>
       </div>
@@ -38,5 +45,5 @@
 {% endblock %}
 
 {% block extra_js %}
-  <script src="{% static 'js/index.js' %}"></script>
+<script src="{% static 'js/index.js' %}"></script>
 {% endblock %}
